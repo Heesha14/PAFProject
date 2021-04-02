@@ -28,6 +28,6 @@
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>Jersey Web Application</servlet-name>
-		<url-pattern>/project/*</url-pattern>
+		<url-pattern>/Management/*</url-pattern>
 	</servlet-mapping>
 </web-app>
