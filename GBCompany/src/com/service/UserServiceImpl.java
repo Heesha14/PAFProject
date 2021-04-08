@@ -22,4 +22,10 @@ public class UserServiceImpl implements UserService {
 		return userRepo.getUsersList();
 	}
 
+	@Override
+	public String deleteUser(String userId) throws SQLException {
+		System.out.println("deleteUser service");
+		return userRepo.deleteUser(userId);
+	}
+
 }

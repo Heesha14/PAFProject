@@ -1,5 +1,6 @@
 package com.rest;
 
+import java.sql.SQLException;
 import java.util.List;
 
 import javax.ws.rs.*;
@@ -31,10 +32,10 @@ public class UserManagementRest {
 
 	}
 
-	@POST
+	@GET
 	@Path("list")
 	@Produces({ MediaType.APPLICATION_JSON, MediaType.TEXT_XML })
-	public Response getDigitalProduct() {
+	public Response getAllUsers() {
 
 		UserService objUserService = new UserServiceImpl();
 		GenericEntity<List<Users>> userResponse;
@@ -48,5 +49,16 @@ public class UserManagementRest {
 
 		return Response.ok(userResponse).build();
 	}
+
+	@DELETE
+	@Path("/")
+	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+	@Produces(MediaType.TEXT_PLAIN)
+	public String deleteUser(@FormParam("userId") String userId) throws SQLException {
+		UserService userService = new UserServiceImpl();
+		return userService.deleteUser(userId);
+
+	}
+
 
 }

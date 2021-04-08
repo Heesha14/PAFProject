@@ -22,4 +22,11 @@ public interface UserRepo {
 	 */
 	public List<Users> getUsersList() throws SQLException;
 
+	/**
+	 * Delete user respectively
+	 *
+	 * @return the deleted message.
+	 * @throws SQLException
+	 */
+	public String deleteUser(String userId) throws SQLException;
 }

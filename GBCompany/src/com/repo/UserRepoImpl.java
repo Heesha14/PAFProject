@@ -114,4 +114,47 @@ public class UserRepoImpl implements UserRepo{
 		}
 		return userList;
 	}
+
+	@Override
+	public String deleteUser(String userId) throws SQLException{
+
+		String userRole = userId.substring(0,2);
+		String sql = null;
+		String result;
+		System.out.println(userRole);
+		try{
+			conn = DBConn.getConnection();
+			
+			if(userRole.equalsIgnoreCase("AD")){
+				sql = "DELETE FROM ADMIN WHERE aId = ? ";
+				System.out.println(sql);
+			}
+			else if(userRole.equalsIgnoreCase("PM")){
+				sql = "DELETE FROM Project_Manager WHERE pmID = ? ";
+			}
+			else if(userRole.equalsIgnoreCase("FB")){
+				sql = "DELETE FROM Funding_Body WHERE fbId = ? ";
+			}
+			else if(userRole.equalsIgnoreCase("BY")){
+				sql = "DELETE FROM Buyer WHERE buyId = ? ";
+			}else{
+				return "Invalid UserId";
+			}
+
+			PreparedStatement preparedStatement = conn.prepareStatement(sql);
+			preparedStatement.setString(1,userId);
+
+			preparedStatement.execute();
+			conn.close();
+			result = "User deleted successfully";
+
+		}catch(Exception e){
+			result = "Error when deleting user";
+			e.printStackTrace();
+		}
+		return result;
+
+	}
+
+	
 }

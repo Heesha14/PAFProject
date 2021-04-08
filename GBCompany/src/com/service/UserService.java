@@ -21,5 +21,11 @@ public interface UserService {
 	 */
 	public List<Users> getAllUsers() throws SQLException;
 
-
+	/**
+	 * Delete user respectively
+	 *
+	 * @return the deleted message.
+	 * @throws SQLException
+	 */
+	public String deleteUser(String userId) throws SQLException;
 }
