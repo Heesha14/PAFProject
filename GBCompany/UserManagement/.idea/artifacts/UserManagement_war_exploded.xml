@@ -4,7 +4,7 @@
     <properties id="maven-jee-properties">
       <options>
         <exploded>true</exploded>
-        <module>UserManagementy</module>
+        <module>UserManagement</module>
         <packaging>war</packaging>
       </options>
     </properties>
