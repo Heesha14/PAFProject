@@ -3,6 +3,7 @@ package com.rest;
 import java.sql.SQLException;
 import java.util.List;
 
+import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 import javax.ws.rs.core.Response.Status;
@@ -32,6 +33,7 @@ public class UserManagementRest {
 
 	}
 
+	@RolesAllowed({"admin"})
 	@GET
 	@Path("list")
 	@Produces({ MediaType.APPLICATION_JSON, MediaType.TEXT_XML })
