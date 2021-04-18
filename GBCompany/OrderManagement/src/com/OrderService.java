@@ -15,21 +15,22 @@ import org.jsoup.nodes.Document;
 public class OrderService{
 	Order OrderObj = new Order();
 
-
-	//retrieve
 	
 	
+//retrieve
+	
+/*
 @GET
 @Path("/") 
 @Produces(MediaType.TEXT_HTML) 
-public String readItems() 
+public String readOrders() 
  {     
  return OrderObj.readOrders(); 
  }
-}
 
-/*
-//insert
+*/
+
+
 @POST
 @Path("/")
 @Consumes(MediaType.APPLICATION_FORM_URLENCODED) 
@@ -37,9 +38,9 @@ public String readItems()
 public String insertOrder(@FormParam("Order_Date") String Order_Date,
 						@FormParam("Order_paid_status") String Order_paid_status, 
 						@FormParam("OrderDesc") String OrderDesc,
-						@FormParam("buyid") int buyid,
-						@FormParam("Project_ID") int Project_ID,
-						@FormParam("pid") int pid
+						@FormParam("buyid") String buyid,
+						@FormParam("Project_ID") String Project_ID,
+						@FormParam("pid") String pid
 						
 				)
 {
@@ -48,4 +49,3 @@ public String insertOrder(@FormParam("Order_Date") String Order_Date,
 	
 }
 }
-*/
