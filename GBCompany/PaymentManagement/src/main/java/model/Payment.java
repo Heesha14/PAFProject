@@ -64,6 +64,12 @@ public class Payment {
 		return output;
 	}
 	
+	//retrieve order payments
+	
+	//update order payments
+	
+	//delete order payments
+	
 	//insert fund payment
 	public String insertFundPayment(int fundID, String amount, Date paidDate)
 	{
@@ -102,5 +108,45 @@ public class Payment {
 		}	 
 		return output;
 	}
+	
+	//insert expenses payment
+		public String insertExpensesPayment(int expenseID, String amount, String expenseStatus, Date paidDate)
+		{
+		 
+			String output = "";
+		 
+			try
+		 
+			{	 
+				Connection con = connect();
+		 
+				if (con == null)	 
+				{return "Error while connecting to the database for inserting."; }
+		 
+				// create a prepared statement	 
+				String query = " insert into expenses_payments(`exPayid`,`expenseId`,`amount`,`payment_status`,`paid_date`)"	 
+						+ " values (?, ?, ?, ?,?)";
+		 
+				PreparedStatement preparedStmt = con.prepareStatement(query);
+		 
+				// binding values	 
+				preparedStmt.setInt(1, 0);	 
+				preparedStmt.setInt(2, expenseID);
+				preparedStmt.setDouble(3, Double.parseDouble(amount));
+				preparedStmt.setString(4, expenseStatus);
+				preparedStmt.setDate(5, paidDate);
+				
+				// execute the statement	 
+				preparedStmt.execute();	 
+				con.close();	 
+				output = "Inserted successfully";	 
+			} 
+			catch (Exception e) 
+			{ 
+				output = "Error while inserting the payment."; 
+				System.err.println(e.getMessage()); 
+			}	 
+			return output;
+		}
 
 }
