@@ -28,4 +28,9 @@ public interface UserService {
 	 * @throws SQLException
 	 */
 	public String deleteUser(String userId) throws SQLException;
-}
+
+	public String getUserByID() throws SQLException;
+
+	public String updateUser(String userId,String username, String password, String email, String phone, String gender,String firstName, String lastName);
+
+	}

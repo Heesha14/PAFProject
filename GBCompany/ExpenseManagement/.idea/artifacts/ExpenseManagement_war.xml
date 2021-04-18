@@ -1,0 +1,14 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="ExpenseManagement:war">
+    <output-path>$PROJECT_DIR$/target</output-path>
+    <properties id="maven-jee-properties">
+      <options>
+        <module>ExpenseManagement</module>
+        <packaging>war</packaging>
+      </options>
+    </properties>
+    <root id="archive" name="ExpenseManagement-0.0.1-SNAPSHOT.war">
+      <element id="artifact" artifact-name="ExpenseManagement:war exploded" />
+    </root>
+  </artifact>
+</component>

@@ -18,7 +18,7 @@ public class UserRepoImpl implements UserRepo{
 	@Override
 	public String createUser(String username, String password, String email, String phone, String gender,String designation) {
 		String sql = null;
-		System.out.println("designation:   "+designation );
+		String output;
 		try {
 			conn = DBConn.getConnection();
 
@@ -51,7 +51,11 @@ public class UserRepoImpl implements UserRepo{
 
 			preparedStatement.execute();
 
-			return "Registration successfull";
+			output = "Registration successfull";
+
+			addUsertoUserTable(username,password,designation);
+
+			return output;
 
 		} catch (Exception e) {
 			System.err.println(e.getMessage());
@@ -156,5 +160,91 @@ public class UserRepoImpl implements UserRepo{
 
 	}
 
-	
+	public void addUsertoUserTable(String username, String password,String role) {
+		String sql = null;
+		String output;
+		try {
+			conn = DBConn.getConnection();
+
+			sql = "INSERT INTO Users(`uId`,`username`,`password`,`role`) " + "VALUES (?,?,?,?)";
+
+			System.out.println("Queryyyyyyyyyyyyyy  "+ sql);
+			PreparedStatement preparedStatement = conn.prepareStatement(sql);
+			preparedStatement.setString(1, username);
+			preparedStatement.setString(2, password);
+			preparedStatement.setString(3, role);
+
+			preparedStatement.execute();
+		} catch (Exception e) {
+			System.err.println(e.getMessage());
+			e.printStackTrace();
+
+		} finally {
+			/*
+			 * database connectivity closed at the end of transaction
+			 */
+			try {
+				if (conn != null) {
+					conn.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+
+		}
+
+	}
+
+	@Override
+	public String updateUser(String Id, String username, String password, String email, String phone, String gender, String firstName, String lastName) {
+		String output = "",sql = null;
+		String userId = Id.substring(0,2);
+		System.out.println(userId);
+		try {
+			conn = DBConn.getConnection();
+			if (conn == null) {
+				return "Error while connecting to the database for updating.";
+			}
+			if(userId.contains("AD")){
+				sql = "UPDATE `Admin` SET `username`= ? ,`password`= ? ,`email`= ?,`phone`= ?,`gender`= ?," +
+						"`first_name`= ?,`last_name`= ? ,designation = 'admin' WHERE `aID` = ?";
+				//sql = "UPDATE ADMIN SET aId = ? WHERE aId = ?";
+				System.out.println(sql);
+			}
+			else if(userId.equalsIgnoreCase("PM")){
+				sql = "UPDATE `Project_Manager` SET `username`= ? ,`password`= ? ,`email`= ?,`phone`= ?,`gender`= ?," +
+						"`first_name`= ?,`last_name`= ? ,designation = 'project_manager' WHERE `pmId` = ?";
+			}
+			else if(userId.equalsIgnoreCase("FB")){
+				sql = "UPDATE `Funding_Body` SET `username`= ? ,`password`= ? ,`email`= ?,`phone`= ?,`gender`= ?," +
+						"`first_name`= ?,`last_name`= ? ,designation = 'funding_body' WHERE `fbId` = ?";
+			}
+			else if(userId.equalsIgnoreCase("BY")){
+				sql = "UPDATE `Buyer` SET `username`= ? ,`password`= ? ,`email`= ?,`phone`= ?,`gender`= ?," +
+						"`first_name`= ?,`last_name`= ? ,designation = 'buyer' WHERE `buyId` = ?";
+			}else{
+				return "Invalid UserId";
+			}
+// create a prepared statement
+			PreparedStatement preparedStatement = conn.prepareStatement(sql);
+// binding values
+			preparedStatement.setString(1, username);
+			preparedStatement.setString(2, password);
+			preparedStatement.setString(3, email);
+			preparedStatement.setString(4, phone);
+			preparedStatement.setString(5, gender);
+			preparedStatement.setString(6, firstName);
+			preparedStatement.setString(7, lastName);
+			preparedStatement.setString(8, Id);
+// execute the statement
+			preparedStatement.execute();
+			conn.close();
+			output = "Updated successfully";
+		} catch (Exception e) {
+			output = "Error while updating the user.";
+			System.err.println(e.getMessage());
+		}
+		return output;
+	}
+
 }

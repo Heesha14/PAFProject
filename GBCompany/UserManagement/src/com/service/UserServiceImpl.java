@@ -28,4 +28,14 @@ public class UserServiceImpl implements UserService {
 		return userRepo.deleteUser(userId);
 	}
 
+	@Override
+	public String getUserByID() throws SQLException {
+		return null;
+	}
+
+	@Override
+	public String updateUser(String userId, String username, String password, String email, String phone, String gender,String firstName, String lastName) {
+		return userRepo.updateUser(userId,username,password,email,phone,gender,firstName,lastName);
+	}
+
 }
