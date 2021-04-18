@@ -61,7 +61,9 @@ public class Order {
 		return output;
 	}
 	
-	/*
+	
+	
+	//retrieving data
 	
 	public String readOrders() {
 		String output = "";
@@ -75,9 +77,9 @@ public class Order {
 			
 			// Prepare the html table to be displayed
 			output = "<table border='1'><tr></th><th>Order_Date</th>" + "<th>Order_paid_status</th>"
-					+ "<th>OrderDesc</th>" + "<th>buyid</th>" + "<th>Project_ID</th>"+ "<th>pid</th>" + "<th>Update</th><th>Remove</th></tr>";
+					+ "<th>OrderDesc</th>" + "<th>buyid</th>" + "<th>Project_ID</th>"+ "<th>pid</th>";
 
-			String query = "select * from order";
+			String query = "select * from `order`";
 			Statement stmt = con.createStatement();
 			ResultSet rs = stmt.executeQuery(query);
 			
@@ -104,7 +106,7 @@ public class Order {
 				output += "<td><input name='btnUpdate' type='button' value='Update' class='btn btn-secondary'></td>"
 						+ "<td><form method='post' action='#'>"
 						+ "<input name='btnRemove' type='submit' value='Remove' class='btn btn-danger'>"
-						+ "<input name='Order_ID' type='hidden' value='" + Order_ID + "'>" + "</form></td></tr>";
+						+ "<input name= 'Order_ID' type='hidden' value='" + Order_ID + "'>" + "</form></td></tr>";
 			}
 			con.close();
 			// Complete the html table
@@ -115,78 +117,137 @@ public class Order {
 			System.err.println(e.getMessage());
 		}
 		return output;
-
 	
-	
-		
 	}
-	*/
 	
-
-
-
+	//UPDATING 
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	/*public String readOrders() {
+	public String updateOrder(String OrderID, String orderdate, String paidstatus, String orderdescription, String buyerid,String proID, String paymentID) {
 		String output = "";
 		try {
 			Connection con = connect();
 			if (con == null) {
-				return "Error while connecting to the database for reading.";
+				return "Error while connecting to the database for updating.";
 			}
-			// Prepare the html table to be displayed
-			output = "<table border='1'><tr><th>Order Date</th><th>Order Paid Status</th>" + "<th>Order Description</th>"
-					+ "<th>buy ID</th>" +  " <th>Project ID</th> " + "<th>PID</th>" + "<th>Update</th><th>Remove</th></tr>";
-
-			String query = "select * from order";
-			Statement stmt = con.createStatement();
-			ResultSet rs = stmt.executeQuery(query);
-			// iterate through the rows in the result set
-			while (rs.next()) {
-				String Order_ID = Integer.toString(rs.getInt("Order_ID"));
-				String Order_String Order_paid_status = rs.getString("Order_paid_status");
-				String OrderDesc = rs.getString("OrderDesc");
-				String buyid = Integer.toString(Date = rs.getString("Order_Date");
-				rs.getInt("buyid"));
-				String Project_ID =  Integer.toString(rs.getInt("Project_ID"));
-				String pid =  Integer.toString(rs.getInt("pid"));
-				//Double.toString(rs.getDouble(
-				
-				
-				
-		
-				// Add into the html table
-				output += "<tr><td>" + Order_Date + "</td>";
-				output += "<td>" + Order_paid_status + "</td>";
-				output += "<td>" + OrderDesc + "</td>";
-				output += "<td>" + buyid + "</td>";
-				output += "<td>" + Project_ID + "</td>";
-				output += "<td>" +  pid + "</td></tr>";
-				
-				
-				// buttons
-				output += "<td><input name='btnUpdate' type='button' value='Update' class='btn btn-secondary'></td>"
-						+ "<td><form method='post' action='#'>"
-						+ "<input name='btnRemove' type='submit' value='Remove' class='btn btn-danger'>"
-						+ "<input name='Order_ID' type='hidden' value='" + Order_ID+ "'>" + "</form></td></tr>";
-			}
+			// create a prepared statement
+			String query = "UPDATE `order` SET Order_Date=?,Order_paid_status=?,OrderDesc=?,buyid=?,Project_ID=?,pid=?  WHERE Order_ID=?";
+			PreparedStatement preparedStmt = con.prepareStatement(query);
+			// binding values
+			preparedStmt.setString(1, orderdate);
+			preparedStmt.setString(2, paidstatus);
+			preparedStmt.setString(3, orderdescription);
+			preparedStmt.setString(4, buyerid);
+			preparedStmt.setString(5, proID);
+			preparedStmt.setString(6, paymentID);
+			preparedStmt.setInt(7, Integer.parseInt(OrderID));
+			
+			// execute the statement
+			preparedStmt.execute();
 			con.close();
-			// Complete the html table
-			output += "</table>";
+			output = "Updated successfully";
 		} catch (Exception e) {
-			output = "Error while reading the orders.";
+			output = "Error while updating the item.";
+			System.err.println(e.getMessage());
+		}
+		return output;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	/*public String updateOrder(String OrderID, String OrderDate, String Orderpaidstatus, String Orderdescription, String bid,String projID,String payid) {
+		String output = "";
+		try {
+			Connection con = connect();
+			if (con == null) {
+				return "Error while connecting to the database for updating.";
+			}
+			// create a prepared statement
+			String query = "UPDATE `order` SET Order_Date=?,Order_paid_status=?,OrderDesc =?,buyid=?,Project_ID=?,pid=?  WHERE Order_ID=?";
+			PreparedStatement preparedStmt = con.prepareStatement(query);
+			// binding values
+			preparedStmt.setString(1, OrderDate);
+			preparedStmt.setString(2, Orderpaidstatus);
+			preparedStmt.setString(3, Orderdescription);
+			preparedStmt.setString(4, bid);
+			preparedStmt.setString(5, projID);
+			preparedStmt.setString(6, payid);
+			preparedStmt.setInt(7, Integer.parseInt(OrderID));
+			
+			// execute the statement
+			preparedStmt.execute();
+			con.close();
+			output = "Updated successfully";
+		} catch (Exception e) {
+			output = "Error while updating the order.";
 			System.err.println(e.getMessage());
 		}
 		return output;
 	} */
 	
-
+	//deleting
+	
+	
+	public String deleteOrder(String Order_ID) 
+	 { 
+	 String output = ""; 
+	 try
+	 { 
+	 Connection con = connect(); 
+	 if (con == null) 
+	 {return "Error while connecting to the database for deleting."; } 
+	 // create a prepared statement
+	 String query = "delete from `order` where Order_ID=?"; 
+	 PreparedStatement preparedStmt = con.prepareStatement(query); 
+	 // binding values
+	 preparedStmt.setInt(1, Integer.parseInt(Order_ID)); 
+	 // execute the statement
+	 preparedStmt.execute(); 
+	 con.close(); 
+	 output = "Deleted successfully"; 
+	 } 
+	 catch (Exception e) 
+	 { 
+	 output = "Error while deleting the order."; 
+	 System.err.println(e.getMessage()); 
+	 } 
+	 return output; 
+	 }
+	
 }
+	
+	
+	
+	
+	
+	
+	
+	
+
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+	
+
