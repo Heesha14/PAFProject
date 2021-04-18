@@ -18,7 +18,7 @@ public class UserRepoImpl implements UserRepo{
 	@Override
 	public String createUser(String username, String password, String email, String phone, String gender,String designation) {
 		String sql = null;
-		System.out.println("designation:   "+designation );
+		String output;
 		try {
 			conn = DBConn.getConnection();
 
@@ -51,7 +51,11 @@ public class UserRepoImpl implements UserRepo{
 
 			preparedStatement.execute();
 
-			return "Registration successfull";
+			output = "Registration successfull";
+
+			addUsertoUserTable(username,password,designation);
+
+			return output;
 
 		} catch (Exception e) {
 			System.err.println(e.getMessage());
@@ -153,6 +157,41 @@ public class UserRepoImpl implements UserRepo{
 			e.printStackTrace();
 		}
 		return result;
+
+	}
+
+	public void addUsertoUserTable(String username, String password,String role) {
+		String sql = null;
+		String output;
+		try {
+			conn = DBConn.getConnection();
+
+			sql = "INSERT INTO Users(`uId`,`username`,`password`,`role`) " + "VALUES (?,?,?,?)";
+
+			System.out.println("Queryyyyyyyyyyyyyy  "+ sql);
+			PreparedStatement preparedStatement = conn.prepareStatement(sql);
+			preparedStatement.setString(1, username);
+			preparedStatement.setString(2, password);
+			preparedStatement.setString(3, role);
+
+			preparedStatement.execute();
+		} catch (Exception e) {
+			System.err.println(e.getMessage());
+			e.printStackTrace();
+
+		} finally {
+			/*
+			 * database connectivity closed at the end of transaction
+			 */
+			try {
+				if (conn != null) {
+					conn.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+
+		}
 
 	}
 

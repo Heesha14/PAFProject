@@ -21,6 +21,8 @@ import com.service.UserServiceImpl;
 @Path("/Users")
 public class UserManagementRest {
 
+
+	@RolesAllowed({"admin"})
 	@POST
 	@Path("/")
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
@@ -59,6 +61,16 @@ public class UserManagementRest {
 	public String deleteUser(@FormParam("userId") String userId) throws SQLException {
 		UserService userService = new UserServiceImpl();
 		return userService.deleteUser(userId);
+
+	}
+
+	@RolesAllowed({"admin"})
+	@GET
+	@Path("admin")
+	@Produces(MediaType.APPLICATION_JSON)
+	public boolean checkAdmin() {
+
+		return true;
 
 	}
 
