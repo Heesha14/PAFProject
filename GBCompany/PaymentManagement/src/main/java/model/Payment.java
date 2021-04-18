@@ -22,7 +22,8 @@ public class Payment {
 		return con;
 	}
 	
-	public String insertPayment(int orderID, int fundID, int expenseId, String amount, String creditCardNo, int cvv, String paymentStatus, Date paidDate)
+	//insert order payment
+	public String insertOrderPayment(int orderID, String amount, String creditCardNo, int cvv, String paymentStatus, Date paidDate)
 	{
 	 
 		String output = "";
@@ -36,21 +37,19 @@ public class Payment {
 			{return "Error while connecting to the database for inserting."; }
 	 
 			// create a prepared statement	 
-			String query = " insert into payments(`pid`, `Order_ID`,`FundId`,`expenseId`,`amount`,`credit_card_no`,`cvv`,`payment_status`,`paid_date`)"	 
-					+ " values (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+			String query = " insert into order_payments(`pid`,`Order_ID`,`amount`,`credit_card_no`,`cvv`,`payment_status`,`paid_date`)"	 
+					+ " values (?, ?, ?, ?, ?, ?, ?)";
 	 
 			PreparedStatement preparedStmt = con.prepareStatement(query);
 	 
 			// binding values	 
 			preparedStmt.setInt(1, 0);	 
-			preparedStmt.setInt(2, orderID);	 
-			preparedStmt.setInt(3, fundID);
-			preparedStmt.setInt(4, expenseId);
-			preparedStmt.setDouble(5, Double.parseDouble(amount));
-			preparedStmt.setString(6, creditCardNo);
-			preparedStmt.setInt(7, cvv);
-			preparedStmt.setString(8, paymentStatus);
-			preparedStmt.setDate(9, paidDate);
+			preparedStmt.setInt(2, orderID);
+			preparedStmt.setDouble(3, Double.parseDouble(amount));
+			preparedStmt.setString(4, creditCardNo);
+			preparedStmt.setInt(5, cvv);
+			preparedStmt.setString(6, paymentStatus);
+			preparedStmt.setDate(7, paidDate);
 			
 			// execute the statement	 
 			preparedStmt.execute();	 
@@ -64,5 +63,8 @@ public class Payment {
 		}	 
 		return output;
 	}
+	
+	//insert fund payment
+	
 
 }
