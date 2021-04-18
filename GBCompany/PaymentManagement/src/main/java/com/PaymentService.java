@@ -34,5 +34,18 @@ public class PaymentService {
 		String output = paymentObj.insertOrderPayment(Order_ID, amount, credit_card_no, cvv, payment_status, paid_date);
 		return output;
 	}
+	
+	//fund payment insert
+		@POST
+		@Path("/addfund")
+		@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+		@Produces(MediaType.TEXT_PLAIN)
+		public String insertFundPayment(@FormParam("fundId") int fundId,
+									@FormParam("amount") String amount,
+									@FormParam("paid_date") Date paid_date)
+		{
+			String output = paymentObj.insertFundPayment(fundId, amount, paid_date);
+			return output;
+		}
 
 }
