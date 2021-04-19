@@ -36,6 +36,14 @@ public class PaymentService {
 	}
 	
 	//order payment read
+	@GET
+	@Path("/read")
+	@Produces(MediaType.TEXT_HTML)
+	public String readOrderPayment()
+	{
+		return paymentObj.readOrderPayment();
+	}
+
 	
 	//order payment update
 	

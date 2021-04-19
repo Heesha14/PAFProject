@@ -76,7 +76,7 @@ public class Payment {
 			
 			// Prepare the html table to be displayed	 
 			output = "<table border='1'><tr><th>PID</th><th>OrderID</th>" +	 
-					"<th>Payment amount</th>" +	 
+					"<th>Payment Amount</th>" +	 
 					"<th>Credit Card No</th>" +	 
 					"<th>CVV</th>" + 
 					"<th>Payment Status</th>" + 
@@ -122,12 +122,12 @@ public class Payment {
 		}	 
 		catch (Exception e)	 
 		{	 
-			output = "Error while reading the items.";	 
+			output = "Error while reading the order payments.";	 
 			System.err.println(e.getMessage());	 
 		}
 		
 		return output;	 
-	} 
+	}
 	
 	//update order payments
 	
