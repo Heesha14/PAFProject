@@ -3,6 +3,9 @@ package com;
 import model.Payment;
 
 import java.sql.Date;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 //For REST Service
 import javax.ws.rs.*;
@@ -62,18 +65,22 @@ public class PaymentService {
 			return output;
 		}
 		
-	//fund payment insert
-	@POST
-	@Path("/addexpense")
-	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-	@Produces(MediaType.TEXT_PLAIN)
-	public String insertExpensesPayment(@FormParam("expenseId") int expenseId,
-									@FormParam("amount") String amount,
-									@FormParam("payment_status") String payment_status,
-									@FormParam("paid_date") Date paid_date)
-	{
-		String output = paymentObj.insertExpensesPayment(expenseId, amount, payment_status, paid_date);
-		return output;
-	}
+	//expense payment insert
+		@POST
+		@Path("/addexpensePayment")
+		@Consumes(MediaType.APPLICATION_JSON)
+		@Produces(MediaType.APPLICATION_JSON)
+		public String insertExpensesToPayment(String request)
+		{
+			JsonObject payObject = new JsonParser().parse(request).getAsJsonObject();
+			
+			// Read the values from the JSON object
+			int expenseId = payObject.get("expenseId").getAsInt();
+			String amount = payObject.get("amount").getAsString();
+			String payment_status = payObject.get("payment_status").getAsString();
+			String paid_date = payObject.get("paid_date").getAsString();
+			
+			return paymentObj.insertExpensesPayment(expenseId, amount, payment_status, Date.valueOf(paid_date));
+		}
 
 }
