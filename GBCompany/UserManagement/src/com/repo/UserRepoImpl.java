@@ -170,9 +170,10 @@ public class UserRepoImpl implements UserRepo{
 
 			System.out.println("Queryyyyyyyyyyyyyy  "+ sql);
 			PreparedStatement preparedStatement = conn.prepareStatement(sql);
-			preparedStatement.setString(1, username);
-			preparedStatement.setString(2, password);
-			preparedStatement.setString(3, role);
+			preparedStatement.setInt(1, 0);
+			preparedStatement.setString(2, username);
+			preparedStatement.setString(3, password);
+			preparedStatement.setString(4, role);
 
 			preparedStatement.execute();
 		} catch (Exception e) {
@@ -197,7 +198,8 @@ public class UserRepoImpl implements UserRepo{
 
 	@Override
 	public String updateUser(String Id, String username, String password, String email, String phone, String gender, String firstName, String lastName) {
-		String output = "",sql = null;
+		String output = "";
+		String sql = null;
 		String userId = Id.substring(0,2);
 		System.out.println(userId);
 		try {
@@ -208,7 +210,6 @@ public class UserRepoImpl implements UserRepo{
 			if(userId.contains("AD")){
 				sql = "UPDATE `Admin` SET `username`= ? ,`password`= ? ,`email`= ?,`phone`= ?,`gender`= ?," +
 						"`first_name`= ?,`last_name`= ? ,designation = 'admin' WHERE `aID` = ?";
-				//sql = "UPDATE ADMIN SET aId = ? WHERE aId = ?";
 				System.out.println(sql);
 			}
 			else if(userId.equalsIgnoreCase("PM")){

@@ -1,10 +1,12 @@
 package com.model;
 
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
 public class Users {
-
+    
     private String id;
     private String first_name;
     private String last_name;
