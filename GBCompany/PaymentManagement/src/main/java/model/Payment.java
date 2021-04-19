@@ -65,6 +65,69 @@ public class Payment {
 	}
 	
 	//retrieve order payments
+	public String readOrderPayment()
+	{
+		String output = "";	 
+		try	 
+		{	 
+			Connection con = connect();	 
+			if (con == null)	 
+			{return "Error while connecting to the database for reading."; }
+			
+			// Prepare the html table to be displayed	 
+			output = "<table border='1'><tr><th>PID</th><th>OrderID</th>" +	 
+					"<th>Payment amount</th>" +	 
+					"<th>Credit Card No</th>" +	 
+					"<th>CVV</th>" + 
+					"<th>Payment Status</th>" + 
+					"<th>Paid Date</th>" + 
+					"<th>Update</th><th>Remove</th></tr>";
+	 
+			String query = "select * from order_payments";	 
+			Statement stmt = con.createStatement();	 
+			ResultSet rs = stmt.executeQuery(query);
+	 
+			// iterate through the rows in the result set	 
+			while (rs.next())	 
+			{	 
+				String pid = Integer.toString(rs.getInt("pid"));
+				String Order_ID = Integer.toString(rs.getInt("Order_ID"));
+				String amount = Double.toString(rs.getDouble("amount"));
+				String credit_card_no = rs.getString("credit_card_no");
+				String cvv = Integer.toString(rs.getInt("cvv"));
+				String payment_status = rs.getString("payment_status");	 
+				Date paid_date = rs.getDate("paid_date");
+	 
+				// Add into the html table	 
+				output += "<tr><td>" + pid + "</td>";	 
+				output += "<td>" + Order_ID + "</td>";	 
+				output += "<td>" + amount + "</td>";	 
+				output += "<td>" + credit_card_no + "</td>";
+				output += "<td>" + cvv + "</td>";
+				output += "<td>" + payment_status + "</td>";
+				output += "<td>" + paid_date + "</td>";
+	 
+				// buttons	 
+				output += "<td><input name='btnUpdate' type='button' value='Update'class='btn btn-secondary'></td>"	 
+						+ "<td><form method='post' action='order_payments.jsp'>"	 
+						+ "<input name='btnRemove' type='submit' value='Remove'class='btn btn-danger'>"	 
+						+ "<input name='pid' type='hidden' value='" + pid	 
+						+ "'>" + "</form></td></tr>";	 
+			
+			}	 
+			con.close();
+	 
+			// Complete the html table	 
+			output += "</table>";	 
+		}	 
+		catch (Exception e)	 
+		{	 
+			output = "Error while reading the items.";	 
+			System.err.println(e.getMessage());	 
+		}
+		
+		return output;	 
+	} 
 	
 	//update order payments
 	
