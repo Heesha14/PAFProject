@@ -1,0 +1,28 @@
+
+j
+java:S2095#"OUse try-with-resources or close this "PreparedStatement" in a "finally" clause.(‡½«ªûÿÿÿÿ
+C
+java:S1481i"-Remove this unused "response" local variable.(“êÂŒ
+C
+java:S1481T"-Remove this unused "response" local variable.(“êÂŒ
+?
+java:S1659"$Declare "output" on a separate line.(ŞÖ¿úÿÿÿÿ
+S	java:S106W"9Replace this use of System.out or System.err by a logger.(…ßŠ£øÿÿÿÿ
+F
+java:S1128"+Remove this unused import 'java.util.List'.(Õë±Äøÿÿÿÿ
+S	java:S106""9Replace this use of System.out or System.err by a logger.(÷¯½½ıÿÿÿÿ
+R
+java:S1854i"<Remove this useless assignment to local variable "response".(“êÂŒ
+S	java:S1065"9Replace this use of System.out or System.err by a logger.(ïù¯¯ûÿÿÿÿ
+F
+java:S1128"0Remove this unused import 'java.util.ArrayList'.(÷‰îƒ
+c	java:S100I"NRename this method name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ñó¥
+Q
+java:S2696"6Make the enclosing method "static" or remove this set.(ûä‚ûÿÿÿÿ
+a
+java:S1192P"FDefine a constant instead of duplicating this literal "admin" 4 times.(ò‰Åëúÿÿÿÿ
+D
+java:S1128"/Remove this unused import 'java.sql.ResultSet'.(ˆóÚw
+R
+java:S1854T"<Remove this useless assignment to local variable "response".(“êÂŒ
+S	java:S106l"9Replace this use of System.out or System.err by a logger.(¡¤¥ôùÿÿÿÿ
