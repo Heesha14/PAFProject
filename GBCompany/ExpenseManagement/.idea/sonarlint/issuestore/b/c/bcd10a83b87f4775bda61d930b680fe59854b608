@@ -1,14 +1,16 @@
 
-S	java:S106@"9Replace this use of System.out or System.err by a logger.(ìì¯­ÿÿÿÿÿ
-Y
-java:S11552">Use isEmpty() to check whether the collection is empty or not.(ùá¿ûÿÿÿÿ
+}
+java:S3923^"[Remove this conditional structure or edit its code blocks so that they're not all the same.(ËÕ‚şÿÿÿÿ8§ç½/
+S	java:S1061"9Replace this use of System.out or System.err by a logger.(ıïÄÿÿÿÿÿ
 h
-java:S3776"RRefactor this method to reduce its Cognitive Complexity from 18 to the 15 allowed.(Í½ø
-n
-java:S2293L"YReplace the type specification in this constructor call with the diamond operator ("<>").(¦äº[
-S	java:S106*"9Replace this use of System.out or System.err by a logger.(ıïÄÿÿÿÿÿ
-R
-java:S25892"7Remove this expression which always evaluates to "true"(ùá¿ûÿÿÿÿ
+java:S3776""RRefactor this method to reduce its Cognitive Complexity from 23 to the 15 allowed.(Í½ø
+S	java:S106?"9Replace this use of System.out or System.err by a logger.(¦ÿ¶Ôúÿÿÿÿ
 T
-java:S4719?"9Replace charset name argument with StandardCharsets.UTF_8(—ÂĞµüÿÿÿÿ
-S	java:S1068"9Replace this use of System.out or System.err by a logger.(¦ÿ¶Ôúÿÿÿÿ
+java:S4719F"9Replace charset name argument with StandardCharsets.UTF_8(—ÂĞµüÿÿÿÿ
+R
+java:S25899"7Remove this expression which always evaluates to "true"(ùá¿ûÿÿÿÿ
+S	java:S106G"9Replace this use of System.out or System.err by a logger.(ìì¯­ÿÿÿÿÿ
+n
+java:S2293S"YReplace the type specification in this constructor call with the diamond operator ("<>").(¦äº[
+Y
+java:S11559">Use isEmpty() to check whether the collection is empty or not.(ùá¿ûÿÿÿÿ

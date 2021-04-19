@@ -1,38 +1,38 @@
 
-k
-java:S2095æ"OUse try-with-resources or close this "PreparedStatement" in a "finally" clause.(‡½«ªûÿÿÿÿ
-j
-java:S2095,"OUse try-with-resources or close this "PreparedStatement" in a "finally" clause.(‡½«ªûÿÿÿÿ
 T	java:S106€"9Replace this use of System.out or System.err by a logger.(…•úúÿÿÿÿ
-T	java:S106´"9Replace this use of System.out or System.err by a logger.(ïù¯¯ûÿÿÿÿ
-k
-java:S2095¬"OUse try-with-resources or close this "PreparedStatement" in a "finally" clause.(‡½«ªûÿÿÿÿ
+S	java:S106="9Replace this use of System.out or System.err by a logger.(ïù¯¯ûÿÿÿÿ
 e
 java:S2095_"OUse try-with-resources or close this "PreparedStatement" in a "finally" clause.(ĞÀœ¢
-O	java:S106†"9Replace this use of System.out or System.err by a logger.(Â–‘ö
-R
-java:S2696‚"6Make the enclosing method "static" or remove this set.(ûä‚ûÿÿÿÿ
-G
-java:S1481¥"+Remove this unused "output" local variable.(Œßäçùÿÿÿÿ
-O	java:S106Õ"9Replace this use of System.out or System.err by a logger.(Â–‘ö
-R
-java:S2696§"6Make the enclosing method "static" or remove this set.(ûä‚ûÿÿÿÿ
-Q
-java:S2696"6Make the enclosing method "static" or remove this set.(ûä‚ûÿÿÿÿ
-S	java:S106="9Replace this use of System.out or System.err by a logger.(ïù¯¯ûÿÿÿÿ
-g	java:S117È"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(¾•±Í
-R
-java:S2696Î"6Make the enclosing method "static" or remove this set.(ûä‚ûÿÿÿÿ
 k
 java:S2095”"OUse try-with-resources or close this "PreparedStatement" in a "finally" clause.(‡½«ªûÿÿÿÿ
+S	java:S106+"9Replace this use of System.out or System.err by a logger.(÷¯½½ıÿÿÿÿ
+T	java:S106«"9Replace this use of System.out or System.err by a logger.(÷¯½½ıÿÿÿÿ
+T	java:S106´"9Replace this use of System.out or System.err by a logger.(ïù¯¯ûÿÿÿÿ
+T	java:S106ö"9Replace this use of System.out or System.err by a logger.(ïù¯¯ûÿÿÿÿ
+k
+java:S2095¬"OUse try-with-resources or close this "PreparedStatement" in a "finally" clause.(‡½«ªûÿÿÿÿ
 Q
 java:S2696V"6Make the enclosing method "static" or remove this set.(ûä‚ûÿÿÿÿ
-O	java:S106Ì"9Replace this use of System.out or System.err by a logger.(êÕã
 ^
 java:S1192X"HDefine a constant instead of duplicating this literal "UNION 
 " 3 times.(—éÛ¤
-S	java:S106+"9Replace this use of System.out or System.err by a logger.(÷¯½½ıÿÿÿÿ
-T	java:S106«"9Replace this use of System.out or System.err by a logger.(÷¯½½ıÿÿÿÿ
-T	java:S106ö"9Replace this use of System.out or System.err by a logger.(ïù¯¯ûÿÿÿÿ
+O	java:S106Õ"9Replace this use of System.out or System.err by a logger.(Â–‘ö
+O	java:S106†"9Replace this use of System.out or System.err by a logger.(Â–‘ö
+R
+java:S2696§"6Make the enclosing method "static" or remove this set.(ûä‚ûÿÿÿÿ
+k
+java:S2095æ"OUse try-with-resources or close this "PreparedStatement" in a "finally" clause.(‡½«ªûÿÿÿÿ
+G
+java:S1481¥"+Remove this unused "output" local variable.(Œßäçùÿÿÿÿ
 k
 java:S1192"UDefine a constant instead of duplicating this literal "VALUES (?,?,?,?,?,?)" 4 times.(€ïçİ
+R
+java:S2696Î"6Make the enclosing method "static" or remove this set.(ûä‚ûÿÿÿÿ
+j
+java:S2095,"OUse try-with-resources or close this "PreparedStatement" in a "finally" clause.(‡½«ªûÿÿÿÿ
+Q
+java:S2696"6Make the enclosing method "static" or remove this set.(ûä‚ûÿÿÿÿ
+R
+java:S2696‚"6Make the enclosing method "static" or remove this set.(ûä‚ûÿÿÿÿ
+O	java:S106Ì"9Replace this use of System.out or System.err by a logger.(êÕã
+g	java:S117È"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(¾•±Í

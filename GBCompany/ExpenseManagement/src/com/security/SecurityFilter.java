@@ -3,17 +3,24 @@ package com.security;
 import javax.annotation.security.DenyAll;
 import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.Invocation;
+import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerRequestFilter;
 import javax.ws.rs.container.ResourceInfo;
 import javax.ws.rs.core.Context;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.Provider;
 import java.io.IOException;
 import java.lang.reflect.Method;
 import java.util.*;
 
-import com.repo.UserAuthRepo;
+import org.glassfish.jersey.client.ClientConfig;
+import org.glassfish.jersey.client.authentication.HttpAuthenticationFeature;
+import org.glassfish.jersey.jackson.JacksonFeature;
 
 @Provider
 public class SecurityFilter implements ContainerRequestFilter {
@@ -42,7 +49,7 @@ public class SecurityFilter implements ContainerRequestFilter {
                 System.out.println("inside DenyAll");
                 Response unauthorizedStatus = Response
                         .status(Response.Status.UNAUTHORIZED)
-                        .entity("{\"error\" : \"not allowed 2\"}")
+                        .entity("{\"error\" : \"access denied\"}")
                         .build();
                 requestContext.abortWith(unauthorizedStatus);
             }
@@ -76,25 +83,39 @@ public class SecurityFilter implements ContainerRequestFilter {
                     Set<String> rolesSet = new HashSet<String>(Arrays.asList(rolesAnnotation.value()));
 
                     //Is user valid?
-                    if (!UserAuthRepo.isUserAllowed(username, password, rolesSet)) {
-                        Response unauthorizedStatus = Response
-                                .status(Response.Status.UNAUTHORIZED)
-                                .entity("{\"error\" : \"not authorized 3\"}")
-                                .build();
-                        requestContext.abortWith(unauthorizedStatus);
+                    ClientConfig clientConfig = new ClientConfig();
+                    HttpAuthenticationFeature feature = HttpAuthenticationFeature.basic(username, password);
+                    clientConfig.register(feature);
+
+                    clientConfig.register(JacksonFeature.class);
+
+                    Client client = ClientBuilder.newClient(clientConfig);
+                    WebTarget webTarget;
+                    if (rolesSet.contains("admin")) {
+                        webTarget = client.target("http://localhost:8443/UserManagement/GBCompany").path("Users/admin");
+                    } else {
+                        webTarget = client.target("http://localhost:8443/UserManagement/GBCompany")
+                                .path("Users/admin");
+                    }
+
+                    Invocation.Builder invocationBuilder = webTarget.request(MediaType.APPLICATION_JSON);
+
+                    Response response = invocationBuilder.get();
+
+                    if (response.getStatus() != 200) {
+                        Response unauthoriazedStatus = Response.status(Response.Status.UNAUTHORIZED)
+                                .entity("{\"error\" : \"not authorized 3\"}").build();
+                        requestContext.abortWith(unauthoriazedStatus);
 
                     }
                     return;
                 }
 
-
             }
         }
-        Response unauthorizedStatus = Response
-                .status(Response.Status.UNAUTHORIZED)
-                .entity("{\"error\" : \"not authorized 1\"}")
-                .build();
-        requestContext.abortWith(unauthorizedStatus);
+        Response unauthoriazedStatus = Response.status(Response.Status.UNAUTHORIZED)
+                .entity("not authorized to access the resource").build();
+        requestContext.abortWith(unauthoriazedStatus);
 
     }
 

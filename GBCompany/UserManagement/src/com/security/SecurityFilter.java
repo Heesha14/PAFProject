@@ -42,7 +42,7 @@ public class SecurityFilter implements ContainerRequestFilter {
                 System.out.println("inside DenyAll");
                 Response unauthorizedStatus = Response
                         .status(Response.Status.UNAUTHORIZED)
-                        .entity("{\"error\" : \"not allowed 2\"}")
+                        .entity("access denied")
                         .build();
                 requestContext.abortWith(unauthorizedStatus);
             }
@@ -79,7 +79,7 @@ public class SecurityFilter implements ContainerRequestFilter {
                     if (!UserAuthRepo.isUserAllowed(username, password, rolesSet)) {
                         Response unauthorizedStatus = Response
                                 .status(Response.Status.UNAUTHORIZED)
-                                .entity("{\"error\" : \"not authorized 3\"}")
+                                .entity("not authorized to access the resource")
                                 .build();
                         requestContext.abortWith(unauthorizedStatus);
 
@@ -87,12 +87,11 @@ public class SecurityFilter implements ContainerRequestFilter {
                     return;
                 }
 
-
             }
         }
         Response unauthorizedStatus = Response
                 .status(Response.Status.UNAUTHORIZED)
-                .entity("{\"error\" : \"not authorized 1\"}")
+                .entity("access unauthorized")
                 .build();
         requestContext.abortWith(unauthorizedStatus);
 

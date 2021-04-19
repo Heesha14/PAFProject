@@ -79,7 +79,7 @@ public class ExpenseRepoImpl implements ExpenseRepo {
 
 			HttpAuthenticationFeature feature = HttpAuthenticationFeature.basic("admin", "admin");
 			Client client = ClientBuilder.newBuilder().register(feature).build();
-			WebTarget webTarget = client.target("http://localhost:8081/AuthService/AuthService").path("users");
+			WebTarget webTarget = client.target("http://localhost:8443/UserManagement/GBCompany").path("users");
 			Invocation.Builder invocationBuilder = webTarget.request(MediaType.APPLICATION_JSON);
 			Response response = invocationBuilder.post(Entity.entity(msg.toString(), MediaType.APPLICATION_JSON));
 
@@ -100,7 +100,7 @@ public class ExpenseRepoImpl implements ExpenseRepo {
 
 			HttpAuthenticationFeature feature = HttpAuthenticationFeature.basic("admin", "admin");
 			Client client = ClientBuilder.newBuilder().register(feature).build();
-			WebTarget webTarget = client.target("http://localhost:8081/AuthService/AuthService").path("users");
+			WebTarget webTarget = client.target("http://localhost:8443/UserManagement/GBCompany").path("users");
 			Invocation.Builder invocationBuilder = webTarget.request(MediaType.APPLICATION_JSON);
 			Response response = invocationBuilder.post(Entity.entity(msg.toString(), MediaType.APPLICATION_JSON));
 

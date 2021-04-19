@@ -67,16 +67,6 @@ public class UserManagementRest {
     }
 
     @RolesAllowed({"admin"})
-    @GET
-    @Path("admin")
-    @Produces(MediaType.APPLICATION_JSON)
-    public boolean checkAdmin() {
-
-        return true;
-
-    }
-
-    @RolesAllowed({"admin"})
     @PUT
     @Path("/")
     @Consumes(MediaType.APPLICATION_JSON)
@@ -98,5 +88,15 @@ public class UserManagementRest {
         return userService.updateUser(aId, username, password, email, phone, gender, first_name, last_name);
     }
 
+
+    @RolesAllowed({"admin"})
+    @GET
+    @Path("admin")
+    @Produces(MediaType.APPLICATION_JSON)
+    public boolean checkAdmin() {
+
+        return true;
+
+    }
 
 }
