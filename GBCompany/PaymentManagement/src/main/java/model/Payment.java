@@ -130,8 +130,80 @@ public class Payment {
 	}
 	
 	//update order payments
+	public String updateOrderPayment(int PID, int orderID, String amount, String creditCardNo, int cvv, String paymentStatus, Date paidDate)
+	{
+		 String output = "";
+		 
+		 try	 
+		 {	 
+			 Connection con = connect();
+		 
+			 if (con == null)		 
+			 {return "Error while connecting to the database for updating."; }
+		 
+			 // create a prepared statement		 
+			 String query = "UPDATE order_payments SET Order_ID=?,amount=?,credit_card_no=?,cvv=?,payment_status=?,paid_date=? WHERE pid=?";
+		 
+			 PreparedStatement preparedStmt = con.prepareStatement(query);
+		 
+			 // binding values		 
+			 preparedStmt.setInt(1, orderID);		 
+			 preparedStmt.setDouble(2, Double.parseDouble(amount));
+			 preparedStmt.setString(3, creditCardNo);
+			 preparedStmt.setInt(4, cvv);
+			 preparedStmt.setString(5, paymentStatus);
+			 preparedStmt.setDate(6, paidDate);
+			 preparedStmt.setInt(7, PID);
+		 
+			 // execute the statement		 
+			 preparedStmt.execute();		 
+			 con.close();	 
+			 output = "Updated successfully";
+		 
+		 }	 
+		 catch (Exception e)	 
+		 {		 
+			 output = "Error while updating the order payment.";		 
+			 System.err.println(e.getMessage());		 
+		 }
+		 
+		 return output;	
+	} 
 	
 	//delete order payments
+	public String deleteOrderPayment(String pid)
+	 
+	{	 
+		String output = "";
+	 
+		try	 
+		{	 
+			Connection con = connect();
+	 
+			if (con == null)	 
+			{return "Error while connecting to the database for deleting."; }
+	 
+			// create a prepared statement	 
+			String query = "delete from order_payments where pid=?";
+			
+			PreparedStatement preparedStmt = con.prepareStatement(query);
+	 
+			// binding values	 
+			preparedStmt.setInt(1, Integer.parseInt(pid));
+	 
+			// execute the statement	 
+			preparedStmt.execute();	 
+			con.close();	 
+			output = "Deleted successfully";	 
+		}	 
+		catch (Exception e)	 
+		{	 
+			output = "Error while deleting the order payment.";	 
+			System.err.println(e.getMessage()); 
+		}
+	 
+		return output; 
+	} 
 	
 	//insert fund payment
 	public String insertFundPayment(int fundID, String amount, Date paidDate)
