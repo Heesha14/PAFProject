@@ -120,9 +120,10 @@ public class Project {
 				return "Error while connecting to the database for updating.";
 			}
 			// create a prepared statement
-			String query = "UPDATE project SET pmid=?,fbid=?,Project_Name=?,Start_Date=?,Deadline_Date=?,Project_Status=?,Project_Fund_Amt=?,Project_Sell_Amt=?";
+			String query = "UPDATE project SET pmid=?,fbid=?,Project_Name=?,Start_Date=?,Deadline_Date=?,Project_Status=?,Project_Fund_Amt=?,Project_Sell_Amt=? WHERE Project_ID=? ";
 			PreparedStatement preparedStmt = con.prepareStatement(query);
 			// binding values
+			
 			preparedStmt.setString(1, pmid);
 			preparedStmt.setString(2, fbid);
 			preparedStmt.setString(3, Project_Name);
@@ -131,6 +132,7 @@ public class Project {
 			preparedStmt.setString(6, Project_Status);
 			preparedStmt.setString(7, Project_Fund_Amt);
 			preparedStmt.setString(8, Project_Sell_Amt);
+			preparedStmt.setString(9, Project_ID);
 			// execute the statement
 			preparedStmt.execute();
 			con.close();
