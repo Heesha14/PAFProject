@@ -3,7 +3,6 @@ package com.rest;
 import java.sql.SQLException;
 import java.util.List;
 
-import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
@@ -22,6 +21,15 @@ import com.service.UserServiceImpl;
  */
 @Path("/Users")
 public class UserManagementRest {
+	
+    @RolesAllowed({"admin"})
+	@GET
+	@Path("All")
+	@Produces(MediaType.TEXT_HTML)
+	public String readItems() {
+		UserService userService = new UserServiceImpl();
+		return userService.getAllUsersInfo();
+	}
 
 
     @RolesAllowed({"admin"})

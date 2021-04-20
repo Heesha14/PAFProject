@@ -11,7 +11,8 @@ import com.model.Users;
  */
 public interface UserService {
 
-	public String createUser(String username, String password, String email, String phone, String gender,String designation);
+	public String createUser(String username, String password, String email, String phone, String gender,
+			String designation);
 
 	/**
 	 * Gets all details of users
@@ -31,6 +32,8 @@ public interface UserService {
 
 	public String getUserByID() throws SQLException;
 
-	public String updateUser(String userId,String username, String password, String email, String phone, String gender,String firstName, String lastName);
+	public String updateUser(String userId, String username, String password, String email, String phone, String gender,
+			String firstName, String lastName);
 
-	}
+	public String getAllUsersInfo();
+}

@@ -41,4 +41,7 @@ public interface UserRepo {
 	public String deleteUser(String userId) throws SQLException;
 
 	String updateUser(String userId, String username, String password, String email, String phone, String gender, String firstName, String lastName);
+
+
+	public String getAllUsers();
 }

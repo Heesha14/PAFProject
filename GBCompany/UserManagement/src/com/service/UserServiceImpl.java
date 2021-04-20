@@ -101,4 +101,9 @@ public class UserServiceImpl implements UserService {
 
     }
 
+	@Override
+	public String getAllUsersInfo() {
+		return userRepo.getAllUsers();
+	}
+
 }
