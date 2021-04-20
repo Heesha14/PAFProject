@@ -74,6 +74,23 @@ public class PaymentService {
 	}
 	
 	//order payment delete
+	@DELETE
+	@Path("/delete")
+	@Consumes(MediaType.APPLICATION_XML)
+	@Produces(MediaType.TEXT_PLAIN)
+	public String deleteOrderPayment(String paymentData)
+	{	
+		//Convert the input string to an XML document 
+		Document doc = Jsoup.parse(paymentData, "", Parser.xmlParser());
+
+	
+		//Read the value from the element <itemID>	 
+		String pid = doc.select("pid").text();
+	 
+		String output = paymentObj.deleteOrderPayment(pid);
+	
+		return output;	
+	}
 	
 	//fund payment insert
 		@POST

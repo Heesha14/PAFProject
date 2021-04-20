@@ -171,7 +171,7 @@ public class Payment {
 	} 
 	
 	//delete order payments
-	public String deleteItem(int pid)
+	public String deleteOrderPayment(String pid)
 	 
 	{	 
 		String output = "";
@@ -184,11 +184,12 @@ public class Payment {
 			{return "Error while connecting to the database for deleting."; }
 	 
 			// create a prepared statement	 
-			String query = "delete from order_payments where pid=?";	 
+			String query = "delete from order_payments where pid=?";
+			
 			PreparedStatement preparedStmt = con.prepareStatement(query);
 	 
 			// binding values	 
-			preparedStmt.setInt(1, pid);
+			preparedStmt.setInt(1, Integer.parseInt(pid));
 	 
 			// execute the statement	 
 			preparedStmt.execute();	 
