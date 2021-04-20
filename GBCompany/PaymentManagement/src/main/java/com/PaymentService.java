@@ -49,6 +49,29 @@ public class PaymentService {
 
 	
 	//order payment update
+	@PUT
+	@Path("/update")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.TEXT_PLAIN)
+	public String updateOrderPayment(String paymentData)
+	{
+	
+		//Convert the input string to a JSON object	 
+		JsonObject payObject = new JsonParser().parse(paymentData).getAsJsonObject();
+	
+		//Read the values from the JSON object	 
+		int pid = payObject.get("pid").getAsInt();	 
+		int Order_ID = payObject.get("Order_ID").getAsInt();	 
+		String amount = payObject.get("amount").getAsString();	 
+		String credit_card_no = payObject.get("credit_card_no").getAsString();	 
+		int cvv = payObject.get("cvv").getAsInt();
+		String payment_status = payObject.get("payment_status").getAsString();
+		String paid_date = payObject.get("paid_date").getAsString();
+		
+		String output = paymentObj.updateOrderPayment(pid, Order_ID, amount, credit_card_no, cvv, payment_status, Date.valueOf(paid_date));
+	
+		return output;
+	}
 	
 	//order payment delete
 	

@@ -130,7 +130,7 @@ public class Payment {
 	}
 	
 	//update order payments
-	public String updateItem(int PID, int orderID, String amount, String creditCardNo, int cvv, String paymentStatus, Date paidDate)
+	public String updateOrderPayment(int PID, int orderID, String amount, String creditCardNo, int cvv, String paymentStatus, Date paidDate)
 	{
 		 String output = "";
 		 
