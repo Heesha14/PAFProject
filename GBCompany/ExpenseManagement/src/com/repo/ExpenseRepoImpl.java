@@ -19,67 +19,70 @@ import javax.ws.rs.core.Response;
 public class ExpenseRepoImpl implements ExpenseRepo {
 
 
-    private static Connection conn;
+	private static Connection conn;
 
-    @Override
-    public String addExpense(Expenses expenseModel) {
-        String sql = null, output;
-        try {
-            conn = DBConn.getConnection();
+	@Override
+	public String addExpense(Expenses expenseModel) {
+		String sql = null, output;
+		try {
+			conn = DBConn.getConnection();
 
-            sql = "INSERT INTO Expenses(expenseTitle,expenseDesc,expenseAmount,expenseStatus,expenseDate) " +
-                    "VALUES (?,?,?,?,?)";
+			sql = "INSERT INTO Expenses(expenseId,expenseTitle,expenseDesc,expenseAmount,expenseStatus,expenseDate) " +
+					"VALUES (?,?,?,?,?,?)";
 
 
-            System.out.println("Queryyyyyyyyyyyyyy  " + sql);
-            PreparedStatement preparedStatement = conn.prepareStatement(sql);
-            preparedStatement.setString(1, expenseModel.getExpenseTitle());
-            preparedStatement.setString(2, expenseModel.getExpenseDesc());
-            preparedStatement.setDouble(3, expenseModel.getExpenseAmount());
-            preparedStatement.setString(4, expenseModel.getExpenseStatus());
-            preparedStatement.setString(5, expenseModel.getExpenseDate());
+			System.out.println("Queryyyyyyyyyyyyyy  " + sql);
+			PreparedStatement preparedStatement = conn.prepareStatement(sql);
+			preparedStatement.setInt(1, countExpenseList());
+			preparedStatement.setString(2, expenseModel.getExpenseTitle());
+			preparedStatement.setString(3, expenseModel.getExpenseDesc());
+			preparedStatement.setDouble(4, expenseModel.getExpenseAmount());
+			preparedStatement.setString(5, expenseModel.getExpenseStatus());
+			preparedStatement.setString(6, expenseModel.getExpenseDate());
+			
+			System.out.println(expenseModel.getExpenseDate());
+			System.out.println(expenseModel.getExpenseDate().substring(0, 10));
 
-            preparedStatement.execute();
+			preparedStatement.execute();
 
-            preparedStatement.execute();
+			output = "Expense successfully inserted";
 
-            output = "Expense successfully inserted";
+			output += InsertExpenseToPayement(expenseModel);
 
-            output += InsertExpenseToPayement(expenseModel);
+			return output;
 
-            return output;
+		} catch (Exception e) {
+			System.err.println(e.getMessage());
+			e.printStackTrace();
+			return "Error occured when adding expense";
 
-        } catch (Exception e) {
-            System.err.println(e.getMessage());
-            e.printStackTrace();
-            return "Error occured when adding expense";
+		} finally {
+			/*
+			 * database connectivity closed at the end of transaction
+			 */
+			try {
+				if (conn != null) {
+					conn.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 
-        } finally {
-            /*
-             * database connectivity closed at the end of transaction
-             */
-            try {
-                if (conn != null) {
-                    conn.close();
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+		}
 
-        }
-
-    }
+	}
 
 	private String InsertExpenseToPayement(Expenses expenseModel) {
 		try {
 			JsonObject msg = new JsonObject();
-			msg.addProperty("expenseID", expenseModel.getExpenseId());
-			msg.addProperty("expenseAmount", expenseModel.getExpenseAmount());
-			msg.addProperty("expenseStatus", expenseModel.getExpenseStatus());
+			msg.addProperty("expenseId", countExpenseList()-1);
+			msg.addProperty("amount", expenseModel.getExpenseAmount());
+			msg.addProperty("payment_status", expenseModel.getExpenseStatus());
+			msg.addProperty("paid_date",expenseModel.getExpenseDate().substring(0, 10));
 
 			HttpAuthenticationFeature feature = HttpAuthenticationFeature.basic("admin", "admin");
 			Client client = ClientBuilder.newBuilder().register(feature).build();
-			WebTarget webTarget = client.target("http://localhost:8443/UserManagement/GBCompany").path("users");
+			WebTarget webTarget = client.target("http://localhost:8443/PaymentManagement/PaymentService").path("Payments/addexpense");
 			Invocation.Builder invocationBuilder = webTarget.request(MediaType.APPLICATION_JSON);
 			Response response = invocationBuilder.post(Entity.entity(msg.toString(), MediaType.APPLICATION_JSON));
 
@@ -91,7 +94,7 @@ public class ExpenseRepoImpl implements ExpenseRepo {
 		return "And Send to Payments";
 	}
 
-    public String makePayment(String expenseID){
+	public String makePayment(String expenseID){
 		try {
 			JsonObject msg = new JsonObject();
 			msg.addProperty("expenseID", expenseID);
@@ -100,7 +103,7 @@ public class ExpenseRepoImpl implements ExpenseRepo {
 
 			HttpAuthenticationFeature feature = HttpAuthenticationFeature.basic("admin", "admin");
 			Client client = ClientBuilder.newBuilder().register(feature).build();
-			WebTarget webTarget = client.target("http://localhost:8443/UserManagement/GBCompany").path("users");
+			WebTarget webTarget = client.target("http://localhost:8443/PaymentManagement/PaymentService").path("Payments/addexpense");
 			Invocation.Builder invocationBuilder = webTarget.request(MediaType.APPLICATION_JSON);
 			Response response = invocationBuilder.post(Entity.entity(msg.toString(), MediaType.APPLICATION_JSON));
 
@@ -110,6 +113,54 @@ public class ExpenseRepoImpl implements ExpenseRepo {
 		}
 
 		return "Payments status updated";
+	}
+
+	public int generateId() {
+		int count = 1000;
+		count++;
+		return count;
+	}
+
+	public int countExpenseList() {
+		String sql = null, output;
+		int dataCount = 0;
+		try {
+			conn = DBConn.getConnection();
+			sql = "SELECT COUNT(*) cnt FROM expenses";
+
+			PreparedStatement preparedStatement = conn.prepareStatement(sql);
+			preparedStatement.execute();
+
+			ResultSet rs = preparedStatement.executeQuery();
+
+			while (rs.next()){
+
+				dataCount = rs.getInt("cnt");
+
+			}
+
+
+		} catch (Exception e) {
+			System.err.println(e.getMessage());
+			e.printStackTrace();
+			return 0;
+
+		} finally {
+			/*
+			 * database connectivity closed at the end of transaction
+			 */
+			try {
+				if (conn != null) {
+					conn.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+
+		}
+		return dataCount + 1000;
+		
+
 	}
 
 }
