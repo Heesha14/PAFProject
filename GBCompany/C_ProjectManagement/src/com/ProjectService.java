@@ -71,4 +71,36 @@ public class ProjectService {
 		return output;
 	}
 
+	
+	@DELETE
+	@Path("/")
+	@Consumes(MediaType.APPLICATION_XML)
+	@Produces(MediaType.TEXT_PLAIN)
+	public String deleteProject(String projectData) {
+//Convert the input string to an XML document
+		Document doc = Jsoup.parse(projectData, "", Parser.xmlParser());
+
+//Read the value from the element <Project_ID>
+		String Project_ID = doc.select("Project_ID").text();
+		String output = projectObj.deleteProject(Project_ID);
+		return output;
+	}
+	@DELETE
+	@Path("/")
+	@Consumes(MediaType.APPLICATION_XML)
+	@Produces(MediaType.TEXT_PLAIN)
+	public String deleteProject(String projectData) {
+//Convert the input string to an XML document
+		Document doc = Jsoup.parse(projectData, "", Parser.xmlParser());
+
+//Read the value from the element <Project_ID>
+		String Project_ID = doc.select("Project_ID").text();
+		String output = projectObj.deleteProject(Project_ID);
+		return output;
+	}
+
+	
+	
+	
+	
 }
