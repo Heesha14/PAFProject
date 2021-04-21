@@ -107,12 +107,14 @@ public class ExpenseRepoImpl implements ExpenseRepo {
 			Invocation.Builder invocationBuilder = webTarget.request(MediaType.APPLICATION_JSON);
 			Response response = invocationBuilder.post(Entity.entity(msg.toString(), MediaType.APPLICATION_JSON));
 
+		return response.toString();
+			
 		} catch (Exception e) {
 			System.out.println("Error in making payments " + e);
 			return "Not send to payments";
 		}
 
-		return "Payments status updated";
+		//return "Payments status updated";
 	}
 
 	public int generateId() {
@@ -161,6 +163,66 @@ public class ExpenseRepoImpl implements ExpenseRepo {
 		return dataCount + 1000;
 		
 
+	}
+
+	@Override
+	public String updateStatus(int expenseId, String paymentStatus) {
+		String output = "";
+
+		try
+		{
+			conn = DBConn.getConnection();
+
+			if (conn == null){
+				return "Error while connecting to the database for updating."; 
+			}
+
+			// create a prepared statement
+			String query = "UPDATE expenses SET expenseStatus = ? WHERE expenseId = ? ";
+
+			PreparedStatement preparedStmt = conn.prepareStatement(query);
+
+			// binding values
+			preparedStmt.setString(1, paymentStatus);
+			preparedStmt.setInt(2, expenseId);
+			
+			// execute the statement
+			preparedStmt.execute();
+			conn.close();
+			output = "Successfully updated expense payment ";
+			
+			output += updatePaymentsStatus(expenseId,paymentStatus);
+			
+		}
+		catch (Exception e)
+		{
+			output = "Error while updating the expense payment.";
+			System.err.println(e.getMessage());
+		}
+
+		return output;
+	}
+
+	private String updatePaymentsStatus(int expenseId, String paymentStatus) {
+		try {
+			JsonObject msg = new JsonObject();
+			msg.addProperty("expenseId", expenseId);
+			msg.addProperty("paymentStatus", paymentStatus);
+
+			HttpAuthenticationFeature feature = HttpAuthenticationFeature.basic("admin", "admin");
+			Client client = ClientBuilder.newBuilder().register(feature).build();
+			WebTarget webTarget = client.target("http://localhost:8443/PaymentManagement/PaymentService").path("Payments/updateStatus");
+			Invocation.Builder invocationBuilder = webTarget.request(MediaType.APPLICATION_JSON);
+			Response response = invocationBuilder.post(Entity.entity(msg.toString(), MediaType.APPLICATION_JSON));
+
+		return response.toString();
+			
+		} catch (Exception e) {
+			System.out.println("Error in making payments " + e);
+			return "Not send to payments";
+		}
+
+		//return "Payments status updated";
 	}
 
 }

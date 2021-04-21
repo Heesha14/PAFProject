@@ -16,5 +16,10 @@ public class ExpenseServiceImpl implements ExpenseService {
 		return expenseRepo.addExpense(expenseModel);
 	}
 
+	@Override
+	public String updateExpenseStatus(int expenseId, String paymentStatus) {
+		return expenseRepo.updateStatus(expenseId,paymentStatus);
+	}
+
 
 }

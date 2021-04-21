@@ -1,8 +1,5 @@
 package com.service;
 
-import java.sql.SQLException;
-import java.util.List;
-
 import com.model.Expenses;
 
 /**
@@ -12,5 +9,7 @@ import com.model.Expenses;
 public interface ExpenseService {
 
 	public String insertExpense(Expenses expenseModel);
+
+	public String updateExpenseStatus(int expenseId, String paymentStatus);
 
 }

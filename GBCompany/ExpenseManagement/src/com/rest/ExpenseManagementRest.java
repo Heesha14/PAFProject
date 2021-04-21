@@ -45,6 +45,26 @@ public class ExpenseManagementRest {
 		return expenseService.insertExpense(expenseModel);
 
 	}
+	
+	@RolesAllowed({"admin"})
+	@PUT
+	@Path("/updatExpenseStatus")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.TEXT_PLAIN)
+	public String updateEStatus(String request)
+	{
+		ExpenseService expenseService = new ExpenseServiceImpl();
+		//Convert the input string to a JSON object	 
+		JsonObject expObject = new JsonParser().parse(request).getAsJsonObject();
+	
+		//Read the values from the JSON object	 
+		int expenseId = expObject.get("expenseId").getAsInt();
+		String paymentStatus = expObject.get("paymentStatus").getAsString();
+		
+		String output = expenseService.updateExpenseStatus(expenseId, paymentStatus);
+	
+		return output;
+	}
 
 
 

@@ -14,7 +14,7 @@ public class Payment {
 			Class.forName("com.mysql.cj.jdbc.Driver");
 	 
 			//Provide the correct details: DBServer/DBName, username, password	 
-			con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/gb", "root", "heshikihalpe95");	 
+			con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/gb", "root", "");	 
 		}	 
 		catch (Exception e)	 
 		{e.printStackTrace();}
@@ -283,5 +283,43 @@ public class Payment {
 			}	 
 			return output;
 		}
+
+
+	//update expense payments
+	public String updateExpensePayment(int expenseId, String paymentStatus)
+	{
+		String output = "";
+
+		try
+		{
+			Connection con = connect();
+
+			if (con == null)
+			{return "Error while connecting to the database for updating."; }
+
+			// create a prepared statement
+			String query = "UPDATE expenses_payments SET payment_status = ? WHERE expenseId = ? ";
+
+			PreparedStatement preparedStmt = con.prepareStatement(query);
+
+			// binding values
+			preparedStmt.setString(1, paymentStatus);
+			preparedStmt.setInt(2, expenseId);
+			
+			// execute the statement
+			preparedStmt.execute();
+			con.close();
+			output = "Updated successfully";
+
+		}
+		catch (Exception e)
+		{
+			output = "Error while updating the expense payment.";
+			System.err.println(e.getMessage());
+		}
+
+		return output;
+	}
+
 
 }

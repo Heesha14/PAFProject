@@ -14,4 +14,6 @@ public interface ExpenseRepo {
 
     public String addExpense(Expenses expenseModel);
 
+	public String updateStatus(int expenseId, String paymentStatus);
+
 }

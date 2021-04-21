@@ -122,5 +122,25 @@ public class PaymentService {
 			
 			return paymentObj.insertExpensesPayment(expenseId, amount, payment_status, Date.valueOf(paid_date));
 		}
+		
+		@PUT
+		@Path("/updateStatus")
+		@Consumes(MediaType.APPLICATION_JSON)
+		@Produces(MediaType.TEXT_PLAIN)
+		public String updateEPayment(String request)
+		{
+		
+			//Convert the input string to a JSON object	 
+			JsonObject expObject = new JsonParser().parse(request).getAsJsonObject();
+		
+			//Read the values from the JSON object	 
+			int expenseId = expObject.get("expenseId").getAsInt();
+			String paymentStatus = expObject.get("paymentStatus").getAsString();
+			
+			String output = paymentObj.updateExpensePayment(expenseId, paymentStatus);
+		
+			return output;
+		}
+		
 
 }
