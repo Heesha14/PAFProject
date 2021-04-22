@@ -82,16 +82,19 @@ public class ExpenseRepoImpl implements ExpenseRepo {
 
 			HttpAuthenticationFeature feature = HttpAuthenticationFeature.basic("admin", "admin");
 			Client client = ClientBuilder.newBuilder().register(feature).build();
-			WebTarget webTarget = client.target("http://localhost:8443/PaymentManagement/PaymentService").path("Payments/addexpense");
+			WebTarget webTarget = client.target("http://localhost:8443/PaymentManagement/PaymentService").path("Payments/addexpensePayment");
 			Invocation.Builder invocationBuilder = webTarget.request(MediaType.APPLICATION_JSON);
 			Response response = invocationBuilder.post(Entity.entity(msg.toString(), MediaType.APPLICATION_JSON));
-
+			System.out.println("In expense");
+			return response.toString();
+			
+			
 		} catch (Exception e) {
 			System.out.println("Error in InsertExpenseToPayement " + e);
 			return "Not send to payments";
 		}
 
-		return "And Send to Payments";
+		//return "And Send to Payments";
 	}
 
 	public String makePayment(String expenseID){
@@ -103,9 +106,9 @@ public class ExpenseRepoImpl implements ExpenseRepo {
 
 			HttpAuthenticationFeature feature = HttpAuthenticationFeature.basic("admin", "admin");
 			Client client = ClientBuilder.newBuilder().register(feature).build();
-			WebTarget webTarget = client.target("http://localhost:8443/PaymentManagement/PaymentService").path("Payments/addexpense");
+			WebTarget webTarget = client.target("http://localhost:8443/PaymentManagement/PaymentService").path("Payments/addexpensePayment");
 			Invocation.Builder invocationBuilder = webTarget.request(MediaType.APPLICATION_JSON);
-			Response response = invocationBuilder.post(Entity.entity(msg.toString(), MediaType.APPLICATION_JSON));
+			Response response = invocationBuilder.put(Entity.entity(msg.toString(), MediaType.APPLICATION_JSON));
 
 		return response.toString();
 			
@@ -213,7 +216,7 @@ public class ExpenseRepoImpl implements ExpenseRepo {
 			Client client = ClientBuilder.newBuilder().register(feature).build();
 			WebTarget webTarget = client.target("http://localhost:8443/PaymentManagement/PaymentService").path("Payments/updateStatus");
 			Invocation.Builder invocationBuilder = webTarget.request(MediaType.APPLICATION_JSON);
-			Response response = invocationBuilder.post(Entity.entity(msg.toString(), MediaType.APPLICATION_JSON));
+			Response response = invocationBuilder.put(Entity.entity(msg.toString(), MediaType.APPLICATION_JSON));
 
 		return response.toString();
 			
