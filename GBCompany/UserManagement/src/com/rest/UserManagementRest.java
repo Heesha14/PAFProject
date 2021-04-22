@@ -1,87 +1,77 @@
 package com.rest;
 
-import java.sql.SQLException;
-import java.util.List;
-
-import javax.annotation.security.RolesAllowed;
-import javax.ws.rs.*;
-import javax.ws.rs.core.*;
-import javax.ws.rs.core.Response.Status;
-
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.model.Users;
 import com.service.UserService;
 import com.service.UserServiceImpl;
 
+import javax.annotation.security.RolesAllowed;
+import javax.ws.rs.*;
+import javax.ws.rs.core.MediaType;
+import java.sql.SQLException;
+import java.util.List;
+
 /**
- * Rest controller for user management
+ * Rest controller for user service
  *
  * @author HeeshaJ
  */
 @Path("/Users")
 public class UserManagementRest {
-	
+
+    UserService userService = new UserServiceImpl();
+
     @RolesAllowed({"admin"})
 	@GET
 	@Path("All")
 	@Produces(MediaType.TEXT_HTML)
-	public String readItems() {
-		UserService userService = new UserServiceImpl();
-		return userService.getAllUsersInfo();
+	public String readAllUsers() {
+
+        return userService.getAllUsersInfo();
 	}
 
 
-    @RolesAllowed({"admin"})
+    @RolesAllowed({"admin","project_manager","funding_body","buyer"})
     @POST
     @Path("/")
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     @Produces(MediaType.TEXT_PLAIN)
     public String createUser(@FormParam("username") String username, @FormParam("password") String password,
                              @FormParam("email") String email, @FormParam("phone") String phone, @FormParam("gender") String gender,
-                             @FormParam("designation") String designation) {
-        UserService userService = new UserServiceImpl();
-        return userService.createUser(username, password, email, phone, gender, designation);
-
+                             @FormParam("designation") String designation,@FormParam("firstName") String firstName,
+                             @FormParam("lastName")  String lastName) {
+        return userService.createUser(username, password, email, phone, gender, designation,firstName,lastName);
     }
 
     @RolesAllowed({"admin"})
     @GET
-    @Path("list")
+    @Path("/{key}")
     @Produces({MediaType.APPLICATION_JSON, MediaType.TEXT_XML})
-    public Response getAllUsers() {
-
-        UserService objUserService = new UserServiceImpl();
-        GenericEntity<List<Users>> userResponse;
-
-        try {
-            userResponse = new GenericEntity<List<Users>>(objUserService.getAllUsers()) {
-            };
-        } catch (Exception ex) {
-            return Response.status(Status.INTERNAL_SERVER_ERROR).entity(ex.getMessage()).build();
-        }
-
-        return Response.ok(userResponse).build();
+    @Consumes({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
+    public List<Users> getAllUsersPerRole(@PathParam("key") String role) {
+        List<Users> userResponse = null;
+            userResponse = userService.getAllUsersPerRole(role);
+			return userResponse;
     }
 
-    @RolesAllowed({"admin"})
+    @RolesAllowed({"admin","project_manager","funding_body","buyer"})
     @DELETE
     @Path("/")
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     @Produces(MediaType.TEXT_PLAIN)
     public String deleteUser(@FormParam("userId") String userId) throws SQLException {
-        UserService userService = new UserServiceImpl();
         return userService.deleteUser(userId);
-
     }
 
-    @RolesAllowed({"admin"})
+    @RolesAllowed({"admin","project_manager","funding_body","buyer"})
     @PUT
     @Path("/")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.TEXT_PLAIN)
     public String updateUser(String request) {
-        UserService userService = new UserServiceImpl();
         // Convert the input string to a JSON object
         JsonObject userObj = new JsonParser().parse(request).getAsJsonObject();
         // Read the values from the JSON object
@@ -97,15 +87,23 @@ public class UserManagementRest {
         return userService.updateUser(aId, username, password, email, phone, gender, first_name, last_name);
     }
 
+    @RolesAllowed({"admin"})
+    @GET
+    @Path("/getUserById/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String getUserById(@PathParam("id") String id) {
+        // users displayed in JSON format
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        return gson.toJson(userService.getUserByID(id));
+    }
 
     @RolesAllowed({"admin"})
     @GET
     @Path("admin")
     @Produces(MediaType.APPLICATION_JSON)
     public boolean checkAdmin() {
-
         return true;
-
     }
+
 
 }

@@ -15,6 +15,10 @@ import java.util.*;
 
 import com.repo.UserAuthRepo;
 
+/**
+ * Security class which validated authentication and authorization
+ *
+ */
 @Provider
 public class SecurityFilter implements ContainerRequestFilter {
     public static final String AUTHENTICATION_HEADER_KEY = "Authorization";
@@ -32,14 +36,13 @@ public class SecurityFilter implements ContainerRequestFilter {
         //If no authorization information present; block access
         if (authHeader == null || authHeader.isEmpty()) {
             requestContext.abortWith(Response.status(Response.Status.UNAUTHORIZED)
-                    .entity("You cannot access this resource").build());
+                    .entity("Not authorized to access this resource").build());
             return;
         }
 
         if (!method.isAnnotationPresent(PermitAll.class)) {
             //Access denied for all
             if (method.isAnnotationPresent(DenyAll.class)) {
-                System.out.println("inside DenyAll");
                 Response unauthorizedStatus = Response
                         .status(Response.Status.UNAUTHORIZED)
                         .entity("access denied")
@@ -79,7 +82,7 @@ public class SecurityFilter implements ContainerRequestFilter {
                     if (!UserAuthRepo.isUserAllowed(username, password, rolesSet)) {
                         Response unauthorizedStatus = Response
                                 .status(Response.Status.UNAUTHORIZED)
-                                .entity("not authorized to access the resource")
+                                .entity("Invalid login credintials")
                                 .build();
                         requestContext.abortWith(unauthorizedStatus);
 
@@ -91,7 +94,7 @@ public class SecurityFilter implements ContainerRequestFilter {
         }
         Response unauthorizedStatus = Response
                 .status(Response.Status.UNAUTHORIZED)
-                .entity("access unauthorized")
+                .entity("Unauthorized access")
                 .build();
         requestContext.abortWith(unauthorizedStatus);
 

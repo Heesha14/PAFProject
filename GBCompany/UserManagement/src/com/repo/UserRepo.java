@@ -7,41 +7,75 @@ import com.model.Users;
 
 /**
  * @author HeeshaJ
- *
  */
 public interface UserRepo {
 
-	/**
-	 *
-	 * @param username
-	 * @param password
-	 * @param email
-	 * @param phone
-	 * @param gender
-	 * @param designation
-	 * @return
-	 */
-	public String createUser(String username, String password, String email, String phone, String gender,String designation);
+    /**
+     * Inserts new user
+     *
+     * @param username
+     * @param password
+     * @param email
+     * @param phone
+     * @param gender
+     * @param designation
+     * @param firstName
+     * @param lastName
+     * @return
+     */
+    public String createUser(String username, String password, String email, String phone, String gender, String designation, String firstName, String lastName);
 
+    /**
+     * Delete user respectively
+     *
+     * @return the deleted message.
+     * @throws SQLException
+     */
+    public String deleteUser(String userId) throws SQLException;
 
-	/**
-	 * Gets all user details from User table
-	 *
-	 * @return the user details.
-	 * @throws SQLException
-	 */
-	public List<Users> getUsersList() throws SQLException;
+    /**
+     * Check if username is existing
+     *
+     * @return the count.
+     * @throws SQLException
+     */
+    public int isExistingUserName(String username);
 
-	/**
-	 * Delete user respectively
-	 *
-	 * @return the deleted message.
-	 * @throws SQLException
-	 */
-	public String deleteUser(String userId) throws SQLException;
+    /**
+     * Upates details of an existing user
+     *
+     * @param userId
+     * @param username
+     * @param password
+     * @param email
+     * @param phone
+     * @param gender
+     * @param firstName
+     * @param lastName
+     * @return
+     */
+    public String updateUser(String userId, String username, String password, String email, String phone, String gender, String firstName, String lastName);
 
-	String updateUser(String userId, String username, String password, String email, String phone, String gender, String firstName, String lastName);
+    /**
+     * Gets all user details
+     *
+     * @return the user details.
+     */
+    public String getAllUsers();
 
+    /**
+     * Gets all user details from per role
+     *
+     * @param role
+     * @return the user details.
+     */
+    public List<Users> getUsersListPerRole(String role);
 
-	public String getAllUsers();
+    /**
+     * Gets all user details per id
+     *
+     * @param id
+     * @return the user details.
+     */
+    public Users getUserByID(String id);
 }
