@@ -64,6 +64,7 @@ public class UserManagementRest {
         return Response.ok(userResponse).build();
     }
 
+    @RolesAllowed({"admin"})
     @DELETE
     @Path("/")
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
