@@ -17,7 +17,7 @@ import java.util.List;
 /**
  * Rest controller for user service
  *
- * @author HeeshaJ
+ * @author Jaanvi.S.C.H IT19801100
  */
 @Path("/Users")
 public class UserManagementRest {

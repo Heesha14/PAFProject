@@ -2,6 +2,11 @@ package com.model;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
+/**
+ * @author Jaanvi.S.C.H IT19801100
+ * model class of user
+ *
+ */
 @XmlRootElement
 public class Users {
     

@@ -6,7 +6,8 @@ import java.util.List;
 import com.model.Users;
 
 /**
- * @author HeeshaJ
+ * @author Jaanvi.S.C.H IT19801100
+ *
  */
 public interface UserRepo {
 

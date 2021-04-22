@@ -9,7 +9,7 @@ import com.repo.UserRepo;
 import com.repo.UserRepoImpl;
 
 /**
- * @author HeeshaJ
+ * @author Jaanvi.S.C.H IT19801100
  *
  */
 public class UserServiceImpl implements UserService {

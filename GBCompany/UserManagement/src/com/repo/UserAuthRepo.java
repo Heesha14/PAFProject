@@ -10,7 +10,7 @@ import java.util.Set;
 /**
  * to check user allowed to access resource
  *
- * @author HeeshaJ
+ * @author Jaanvi.S.C.H IT19801100
  */
 public class UserAuthRepo {
 
