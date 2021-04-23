@@ -113,20 +113,22 @@ public class PaymentService {
 		public String insertExpensesToPayment(String request)
 		{
 			JsonObject payObject = new JsonParser().parse(request).getAsJsonObject();
+			System.out.println("In payemnets");
 			
 			// Read the values from the JSON object
 			int expenseId = payObject.get("expenseId").getAsInt();
 			String amount = payObject.get("amount").getAsString();
 			String payment_status = payObject.get("payment_status").getAsString();
 			String paid_date = payObject.get("paid_date").getAsString();
+			System.out.println(expenseId+amount+payment_status+paid_date);
 			
-			return paymentObj.insertExpensesPayment(expenseId, amount, payment_status, Date.valueOf(paid_date));
+			return paymentObj.insertExpensesPayment(expenseId, amount, payment_status, null);
 		}
 		
 		@PUT
 		@Path("/updateStatus")
 		@Consumes(MediaType.APPLICATION_JSON)
-		@Produces(MediaType.TEXT_PLAIN)
+		@Produces(MediaType.APPLICATION_JSON)
 		public String updateEPayment(String request)
 		{
 		

@@ -9,6 +9,12 @@ import java.util.List;
 
 import com.dbutil.DBConn;
 import com.model.Users;
+import org.glassfish.jersey.client.authentication.HttpAuthenticationFeature;
+
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.Response;
 
 /**
  * @author Jaanvi.S.C.H IT19801100
@@ -18,6 +24,7 @@ public class UserRepoImpl implements UserRepo {
 
 
     private static Connection conn;
+    private static final String REST_URL_PROJECTS = "http://localhost:8443/C_ProjectManagement/ProjectService/Projects";
 
     @Override
     public String createUser(String username, String password, String email, String phone, String gender,
@@ -411,5 +418,16 @@ public class UserRepoImpl implements UserRepo {
             e.printStackTrace();
         }
         return users;
+    }
+
+    @Override
+    public String getAllProject() {
+        HttpAuthenticationFeature feature = HttpAuthenticationFeature.basic("admin", "admin");
+        Client client = ClientBuilder.newBuilder().register(feature).build();
+        WebTarget target = client.target(REST_URL_PROJECTS);
+        Response response = target.request().get();
+        String result = response.readEntity(String.class);
+        response.close();
+        return result;
     }
 }

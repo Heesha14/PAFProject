@@ -1,23 +1,17 @@
 package com.rest;
 
-import java.sql.SQLException;
-import java.util.List;
-
-import javax.annotation.security.PermitAll;
-import javax.annotation.security.RolesAllowed;
-import javax.ws.rs.*;
-import javax.ws.rs.core.*;
-import javax.ws.rs.core.Response.Status;
-
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.model.Expenses;
 import com.service.ExpenseService;
 import com.service.ExpenseServiceImpl;
 
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
+import javax.annotation.security.RolesAllowed;
+import javax.ws.rs.*;
+import javax.ws.rs.core.MediaType;
 
 /**
- * Rest controller for user management
+ * Rest controller for expense service
  *
  * @author HeeshaJ
  *
@@ -65,7 +59,6 @@ public class ExpenseManagementRest {
 	
 		return output;
 	}
-
 
 
 

@@ -1,14 +1,13 @@
-/**
- * @author Heesha
- * DB connection
- *
- */
-
 package com.dbutil;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+/**
+ * @author Jaanvi.S.C.H IT19801100
+ * DB connection
+ *
+ */
 public class DBConn {
 
 	private static String url = "jdbc:mysql://localhost:3306/gbDB";

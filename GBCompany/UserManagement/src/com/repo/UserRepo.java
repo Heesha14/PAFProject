@@ -79,4 +79,12 @@ public interface UserRepo {
      * @return the user details.
      */
     public Users getUserByID(String id);
+
+    /**
+     * Intersecrvice communication
+     * Gets all projects available
+     *
+     * @return the projects.
+     */
+    public String getAllProject();
 }

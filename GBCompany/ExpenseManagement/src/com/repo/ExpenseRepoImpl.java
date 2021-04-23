@@ -4,22 +4,30 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
+
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.client.Invocation;
+import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+
+import org.glassfish.jersey.client.authentication.HttpAuthenticationFeature;
 
 import com.dbutil.DBConn;
 import com.google.gson.JsonObject;
 import com.model.Expenses;
-import org.glassfish.jersey.client.authentication.HttpAuthenticationFeature;
 
-import javax.ws.rs.client.*;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-
+/**
+ * @author Jaanvi.S.C.H IT19801100
+ *
+ */
 public class ExpenseRepoImpl implements ExpenseRepo {
 
 
 	private static Connection conn;
+	private static final String REST_URL_PAYMENT = "http://localhost:8443/PaymentManagement/PaymentService";
 
 	@Override
 	public String addExpense(Expenses expenseModel) {
@@ -39,14 +47,17 @@ public class ExpenseRepoImpl implements ExpenseRepo {
 			preparedStatement.setDouble(4, expenseModel.getExpenseAmount());
 			preparedStatement.setString(5, expenseModel.getExpenseStatus());
 			preparedStatement.setString(6, expenseModel.getExpenseDate());
+			//preparedStatement.setString(6,  Date.valueOf(LocalDate.now()).toString());
 			
 			System.out.println(expenseModel.getExpenseDate());
-			System.out.println(expenseModel.getExpenseDate().substring(0, 10));
-
 			preparedStatement.execute();
 
 			output = "Expense successfully inserted";
 
+			/*
+			 * Interservice communication
+			 * Inserting data to payment details
+			 */
 			output += InsertExpenseToPayement(expenseModel);
 
 			return output;
@@ -82,11 +93,11 @@ public class ExpenseRepoImpl implements ExpenseRepo {
 
 			HttpAuthenticationFeature feature = HttpAuthenticationFeature.basic("admin", "admin");
 			Client client = ClientBuilder.newBuilder().register(feature).build();
-			WebTarget webTarget = client.target("http://localhost:8443/PaymentManagement/PaymentService").path("Payments/addexpensePayment");
+			WebTarget webTarget = client.target(REST_URL_PAYMENT).path("Payments/addexpensePayment");
 			Invocation.Builder invocationBuilder = webTarget.request(MediaType.APPLICATION_JSON);
 			Response response = invocationBuilder.post(Entity.entity(msg.toString(), MediaType.APPLICATION_JSON));
 			System.out.println("In expense");
-			return response.toString();
+			//return response.toString();
 			
 			
 		} catch (Exception e) {
@@ -94,30 +105,7 @@ public class ExpenseRepoImpl implements ExpenseRepo {
 			return "Not send to payments";
 		}
 
-		//return "And Send to Payments";
-	}
-
-	public String makePayment(String expenseID){
-		try {
-			JsonObject msg = new JsonObject();
-			msg.addProperty("expenseID", expenseID);
-			msg.addProperty("paymentDate", String.valueOf(java.time.LocalDate.now()));
-			msg.addProperty("paymentStatus", "Paid");
-
-			HttpAuthenticationFeature feature = HttpAuthenticationFeature.basic("admin", "admin");
-			Client client = ClientBuilder.newBuilder().register(feature).build();
-			WebTarget webTarget = client.target("http://localhost:8443/PaymentManagement/PaymentService").path("Payments/addexpensePayment");
-			Invocation.Builder invocationBuilder = webTarget.request(MediaType.APPLICATION_JSON);
-			Response response = invocationBuilder.put(Entity.entity(msg.toString(), MediaType.APPLICATION_JSON));
-
-		return response.toString();
-			
-		} catch (Exception e) {
-			System.out.println("Error in making payments " + e);
-			return "Not send to payments";
-		}
-
-		//return "Payments status updated";
+		return " And Send to Payments";
 	}
 
 	public int generateId() {
@@ -214,18 +202,19 @@ public class ExpenseRepoImpl implements ExpenseRepo {
 
 			HttpAuthenticationFeature feature = HttpAuthenticationFeature.basic("admin", "admin");
 			Client client = ClientBuilder.newBuilder().register(feature).build();
-			WebTarget webTarget = client.target("http://localhost:8443/PaymentManagement/PaymentService").path("Payments/updateStatus");
+			WebTarget webTarget = client.target(REST_URL_PAYMENT).path("Payments/updateStatus");
 			Invocation.Builder invocationBuilder = webTarget.request(MediaType.APPLICATION_JSON);
 			Response response = invocationBuilder.put(Entity.entity(msg.toString(), MediaType.APPLICATION_JSON));
 
-		return response.toString();
+		//return response.toString();
 			
 		} catch (Exception e) {
 			System.out.println("Error in making payments " + e);
 			return "Not send to payments";
 		}
 
-		//return "Payments status updated";
+		return "Payments status updated";
 	}
+	
 
 }

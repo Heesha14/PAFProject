@@ -22,6 +22,10 @@ import org.glassfish.jersey.client.ClientConfig;
 import org.glassfish.jersey.client.authentication.HttpAuthenticationFeature;
 import org.glassfish.jersey.jackson.JacksonFeature;
 
+/**
+ * @author Jaanvi.S.C.H IT19801100
+ *
+ */
 @Provider
 public class SecurityFilter implements ContainerRequestFilter {
     public static final String AUTHENTICATION_HEADER_KEY = "Authorization";

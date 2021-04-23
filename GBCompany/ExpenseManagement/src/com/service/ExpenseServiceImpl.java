@@ -1,12 +1,13 @@
 package com.service;
 
-import java.sql.SQLException;
-import java.util.List;
-
 import com.model.Expenses;
 import com.repo.ExpenseRepo;
 import com.repo.ExpenseRepoImpl;
 
+/**
+ * @author Jaanvi.S.C.H IT19801100
+ *
+ */
 public class ExpenseServiceImpl implements ExpenseService {
 
 	ExpenseRepo expenseRepo = new ExpenseRepoImpl();

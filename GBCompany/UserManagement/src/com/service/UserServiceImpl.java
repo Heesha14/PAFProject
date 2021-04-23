@@ -139,4 +139,9 @@ public class UserServiceImpl implements UserService {
         return userRepo.getUserByID(id);
     }
 
+    @Override
+    public String getAllProjects() {
+        return userRepo.getAllProject();
+    }
+
 }

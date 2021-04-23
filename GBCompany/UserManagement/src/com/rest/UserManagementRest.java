@@ -106,4 +106,13 @@ public class UserManagementRest {
     }
 
 
+    @RolesAllowed({"admin"})
+    @GET
+    @Path("viewProjects")
+    @Produces(MediaType.TEXT_HTML)
+    public String getAllProducts() {
+        return userService.getAllProjects();
+    }
+
+
 }
