@@ -142,60 +142,24 @@ public class Order {
 			preparedStmt.setInt(7, Integer.parseInt(OrderID));
 			
 			// execute the statement
-			preparedStmt.execute();
-			con.close();
-			output = "Updated successfully";
+			
+			int rowsUpdated = preparedStmt.executeUpdate(); 
+			 
+			 if(rowsUpdated > 0) {
+				 output = "Updated successfully";
+			 }
+			 else {
+				 output = "Error while updating the order,Recheck Order ID."; 
+			 }
+			 con.close(); 
 		} catch (Exception e) {
-			output = "Error while updating the item.";
+			output = "Error while updating the item, Recheck The ORDER ID.";
 			System.err.println(e.getMessage());
 		}
 		return output;
 	}
 	
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	/*public String updateOrder(String OrderID, String OrderDate, String Orderpaidstatus, String Orderdescription, String bid,String projID,String payid) {
-		String output = "";
-		try {
-			Connection con = connect();
-			if (con == null) {
-				return "Error while connecting to the database for updating.";
-			}
-			// create a prepared statement
-			String query = "UPDATE `order` SET Order_Date=?,Order_paid_status=?,OrderDesc =?,buyid=?,Project_ID=?,pid=?  WHERE Order_ID=?";
-			PreparedStatement preparedStmt = con.prepareStatement(query);
-			// binding values
-			preparedStmt.setString(1, OrderDate);
-			preparedStmt.setString(2, Orderpaidstatus);
-			preparedStmt.setString(3, Orderdescription);
-			preparedStmt.setString(4, bid);
-			preparedStmt.setString(5, projID);
-			preparedStmt.setString(6, payid);
-			preparedStmt.setInt(7, Integer.parseInt(OrderID));
-			
-			// execute the statement
-			preparedStmt.execute();
-			con.close();
-			output = "Updated successfully";
-		} catch (Exception e) {
-			output = "Error while updating the order.";
-			System.err.println(e.getMessage());
-		}
-		return output;
-	} */
 	
 	//deleting
 	
@@ -205,22 +169,30 @@ public class Order {
 	 String output = ""; 
 	 try
 	 { 
-	 Connection con = connect(); 
-	 if (con == null) 
-	 {return "Error while connecting to the database for deleting."; } 
-	 // create a prepared statement
-	 String query = "delete from `order` where Order_ID=?"; 
-	 PreparedStatement preparedStmt = con.prepareStatement(query); 
-	 // binding values
-	 preparedStmt.setInt(1, Integer.parseInt(Order_ID)); 
-	 // execute the statement
-	 preparedStmt.execute(); 
-	 con.close(); 
-	 output = "Deleted successfully"; 
+		 Connection con = connect(); 
+		 if (con == null){
+			 return "Error while connecting to the database for deleting.";
+		 } 
+		 // create a prepared statement
+		 String query = "delete from `order` where Order_ID=?";
+		 
+		 PreparedStatement preparedStmt = con.prepareStatement(query); 
+		 // binding values
+		 preparedStmt.setInt(1, Integer.parseInt(Order_ID)); 
+		 // execute the statement
+		 int rowsDeleted = preparedStmt.executeUpdate(); 
+		 
+		 if(rowsDeleted > 0) {
+			 output = "Deleted successfully";
+		 }
+		 else {
+			 output = "Error while deleting the order,Recheck Order ID."; 
+		 }
+		 con.close(); 
+		  
 	 } 
 	 catch (Exception e) 
 	 { 
-	 output = "Error while deleting the order."; 
 	 System.err.println(e.getMessage()); 
 	 } 
 	 return output; 
