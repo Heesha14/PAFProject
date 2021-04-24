@@ -69,8 +69,7 @@ public class Project {
 				return "Error while connecting to the database for reading.";
 			}
 			// Prepare the html table to be displayed
-			output = "<table border='1'><tr><th>PM ID</th><th>FB ID</th><th>Project_Name</th><th>Start_Date</th><th>Deadline_Date</th><th>Project_Status</th><th>Project_Fund_Amt</th><th>Project_Sell_Amt</th>" 
-			+ "<th>Update</th><th>Remove</th></tr>";
+			output = "<table border='1'><tr><th>PM ID</th><th>FB ID</th><th>Project_Name</th><th>Start_Date</th><th>Deadline_Date</th><th>Project_Status</th><th>Project_Fund_Amt</th><th>Project_Sell_Amt</th>" ;
 
 			String query = "select * from project";
 			Statement stmt = con.createStatement();
@@ -86,6 +85,7 @@ public class Project {
 				String Project_Status = rs.getString("Project_Status");
 				String Project_Fund_Amt = rs.getString("Project_Fund_Amt");
 				String Project_Sell_Amt = rs.getString("Project_Sell_Amt");
+				
 				// Add into the html table
 				output += "<tr><td>" + pmid + "</td>";
 				output += "<td>" + fbid + "</td>";
@@ -93,14 +93,14 @@ public class Project {
 				output += "<td>" + Start_Date + "</td>";
 				output += "<td>" + Deadline_Date + "</td>";
 				output += "<td>" + Project_Status + "</td>";
-				output += "<td>" + Project_Name + "</td>";
 				output += "<td>" + Project_Fund_Amt + "</td>";
 				output += "<td>" + Project_Sell_Amt + "</td></tr>";
+			
 				// buttons
-				output += "<td><input name='btnUpdate' type='button' value='Update' class='btn btn-secondary'></td>"
+			/**	output += "<td><input name='btnUpdate' type='button' value='Update' class='btn btn-secondary'></td>"
 						+ "<td><form method='post' action='projects.jsp'>"
 						+ "<input name='btnRemove' type='submit' value='Remove' class='btn btn-danger'>"
-						+ "<input name='Project_ID' type='hidden' value='" + Project_ID + "'>" + "</form></td></tr>";
+						+ "<input name='Project_ID' type='hidden' value='" + Project_ID + "'>" + "</form></td></tr>";  **/
 			}
 			con.close();
 			// Complete the html table
@@ -134,15 +134,23 @@ public class Project {
 			preparedStmt.setString(8, Project_Sell_Amt);
 			preparedStmt.setString(9, Project_ID);
 			// execute the statement
-			preparedStmt.execute();
-			con.close();
-			output = "Updated successfully";
+			int rowsUpdated = preparedStmt.executeUpdate(); 
+			
+			
+			if(rowsUpdated > 0) {
+				 output = "Updated successfully";
+			 }
+			 else {
+				 output = "Error while updating the project."; 
+			 }
+			 con.close(); 
 		} catch (Exception e) {
-			output = "Error while updating the item.";
+			output = "Error while updating the project.";
 			System.err.println(e.getMessage());
 		}
 		return output;
 	}
+			
 
 	public String deleteProject(String Project_ID) {
 		String output = "";
@@ -157,14 +165,24 @@ public class Project {
 			// binding values
 			preparedStmt.setInt(1, Integer.parseInt(Project_ID));
 			// execute the statement
-			preparedStmt.execute();
-			con.close();
-			output = "Deleted successfully";
-		} catch (Exception e) {
-			output = "Error while deleting the project.";
-			System.err.println(e.getMessage());
-		}
-		return output;
-	}
+			int rowsDeleted = preparedStmt.executeUpdate(); 
+		
+			if(rowsDeleted > 0) {
+				 output = "Deleted successfully";
+			 }
+			 else {
+				 output = "Error while deleting the project,Recheck Project ID."; 
+			 }
+			 con.close(); 
+			  
+		 } 
+		 catch (Exception e) 
+		 { 
+		output = "Error while deleting the project."; 
+		 System.err.println(e.getMessage()); 
+		 } 
+		 return output; 
+		 }
+			
 	
 }
