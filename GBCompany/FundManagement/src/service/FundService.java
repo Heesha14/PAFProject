@@ -1,5 +1,7 @@
 package service;
 
+
+
 import dbutil.DBconnect;
 
 import java.sql.Connection;
@@ -8,30 +10,63 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 
+import com.google.gson.JsonObject;
+import com.sun.jersey.api.client.Client;
+
+//import javax.ws.rs.client.ClientBuilder;
+//import javax.ws.rs.client.Entity;
+//import javax.ws.rs.client.Invocation;
+//import javax.ws.rs.client.WebTarget;
+//import org.glassfish.jersey.client.authentication.HttpAuthenticationFeature;
+
+//import com.google.gson.JsonObject;
+
+
+
+import okhttp3.Credentials;
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
+
+
 public class FundService {
 	
 	public static Connection con;
 		
+	
+	
 		public String readFunds() 
-		 { 
-		 String output = ""; 
-		 try
-		 { 
+		{ 
+		String output = ""; 
+		try
+		{ 
 		
 		con = DBconnect.getconnect();
-		 if (con == null) 
-		 {return "Error while connecting to the database for reading."; } 
+		
+		if (con == null) 
+		{
+			 return "Error while connecting to the database for reading."; 
+		} 
 		 
-		 // Prepare the html table to be displayed
-		 output = "<table border='1'><tr><th>Fund Code</th><th>Fund Type</th>" +
-		 "<th>Amount</th>" + 
-		 "<th>Date</th>" + "<th>Status</th>" +
-		 "<th>Update</th><th>Delete</th></tr>"; 
+		 // Prepare the html fund table to be displayed
+		 output = "<table border='1'>"
+		 		+ "<tr>"
+		 		+ "<th>Fund Code</th>"
+		 		+ "<th>Fund Type</th>" 
+		 		+ "<th>Amount</th>"
+		 		+ "<th>Date</th>" 
+		 		+ "<th>Status</th>"
+		 		+ "<th>Update</th>"
+		 		+ "<th>Delete</th>"
+		 		+ "</tr>"; 
 		 
+		 //call sql query
 		 String query = "select * from funds"; 
 		 Statement stmt = con.createStatement(); 
 		 ResultSet rs = stmt.executeQuery(query); 
-		 // iterate through the rows in the result set
+		
 		 while (rs.next()) 
 		 { 
 		 String fundID = Integer.toString(rs.getInt("fundId")); 
@@ -56,123 +91,281 @@ public class FundService {
 		 + "'>" + "</form></td></tr>"; 
 		 } 
 		 con.close(); 
-		 // Complete the html table
+		
 		 output += "</table>"; 
 		 } 
 		 catch (Exception e) 
 		 { 
-		 output = "Error while reading the items."; 
+		 output = "Error while reading the fund details."; 
 		 System.err.println(e.getMessage()); 
 		 } 
 		 return output; 
 		 }
 
 
-		
+	
 		
 		//add fund for the projects
 		
 		public String addFund(String code, String type, String amount, String date,String status) 
-		 { 
-		 String output = ""; 
-		 try
-		 { 
-		 con = DBconnect.getconnect(); 
-		 if (con == null) 
-		 {
-			 return "Error while connecting to the database for inserting."; 
+		{ 
+			String output = ""; 
+			try
+			{ 		
+					//database connection
+					con = DBconnect.getconnect(); 
+					if (con == null) 
+					{
+						return "Error while connecting to the database for inserting."; 
+						
+					} 
 		 
-		 } 
-		 
-		 // create a prepared statement
-		 String query = " insert into funds (fundId,fundCode,fundType,amount,date,status)" + " values (?, ?, ?, ?, ?,?)"; 
-		 PreparedStatement preparedStmt = con.prepareStatement(query); 
-		 // binding values
-		 preparedStmt.setInt(1, 0); 
-		 preparedStmt.setString(2, code); 
-		 preparedStmt.setString(3, type); 
-		 preparedStmt.setDouble(4, Double.parseDouble(amount)); 
-		 preparedStmt.setString(5, date); 
-		 preparedStmt.setString(6, status);
-		 // execute the statement
-		 
-		 preparedStmt.execute(); 
-		 con.close(); 
-		 output = "Inserted successfully"; 
-		 } 
-		 catch (Exception e) 
-		 { 
-		 output = "Error while inserting the funds details"; 
-		 System.err.println(e.getMessage()); 
-		 } 
-		 return output; 
+					// create a prepared statement
+					String query = " insert into funds (fundId,fundCode,fundType,amount,date,status)" + " values (?, ?, ?, ?, ?,?)"; 
+					PreparedStatement preparedStmt = con.prepareStatement(query); 
+					// binding values
+					preparedStmt.setInt(1, 0); 
+					preparedStmt.setString(2, code); 
+					preparedStmt.setString(3, type); 
+					preparedStmt.setDouble(4, Double.parseDouble(amount)); 
+					preparedStmt.setString(5, date); 
+					preparedStmt.setString(6, status);
+					
+					// execute the statement
+		 			preparedStmt.execute(); 
+					con.close(); 
+					output = "Fund detials Inserted successfully";
+					System.out.println();	
+					output += sendToItems(code,type, amount);
+		//			output += addFundPayment(code,type,amount);
+					
+			} 
+			catch (Exception e) 
+			{ 
+				output = "Error while inserting the funds details"; 
+				System.err.println(e.getMessage()); 
+			} 
+			return output; 
 		 } 
 		
+/*
+		private String sendToItems(String code,String type,String amount) {
+			try {
+				JsonObject msg = new JsonObject();
+				msg.addProperty("fundCode", code);
+				msg.addProperty("fundType", type);
+				msg.addProperty("amount",amount);
+			
+				Client client = Client..newClient();
+				WebTarget webTarget = client.target("http://localhost:8081/labtest1/ItemService").path("Items/add");
+				Invocation.Builder invocationBuilder = webTarget.request(MediaType.APPLICATION_JSON);
+				Response response = invocationBuilder.put(Entity.entity(msg.toString(), MediaType.APPLICATION_JSON));
+
+			return response.toString();
+				
+			} catch (Exception e) {
+				System.out.println("Error in making payments " + e);
+				return "Not send to payments";
+			}
+
+			//return "Payments status updated";
+		}
+*/
 		
+
+		public String sendToItems(String code,String type,String amount) {
+			try {
+				MediaType JSONType = MediaType.get("application/json; charset=utf-8");
+				OkHttpClient client = new OkHttpClient();
+				RequestBody body = RequestBody.create("{ 'itemCode':'" + code
+						+ "','itemName':'"+ type
+						+ "','itemPrice':'" + amount
+					
+						+ "'}", JSONType);
+				Request request = new Request.Builder()
+						.url("http://localhost:8081/labtest1/ItemService/Items/add").post(body)
+						.build();
+
+				try (Response response = client.newCall(request).execute()) {
+					return response.body().string();
+				}
+			} catch (Exception e) {
+				System.out.println("Error in GetInsertsendToItemSeviveFromPayment " + e);
+				e.printStackTrace();
+				e.getMessage();
+				return "error";
+			}
+			//return " And send to item";
+		}
+		
+/*		
+		public String addFundPayment(String code,String type,String amount) {
+			try {
+				MediaType JSONType = MediaType.get("application/json; charset=utf-8");
+				OkHttpClient client = new OkHttpClient();
+				RequestBody body = RequestBody.create("{ 'fundCode':'" + code
+						+ "','fundName':'"+ type
+						+ "','amount':'" + amount
+					
+						+ "'}", JSONType);
+				Request request = new Request.Builder()
+						.url("http://localhost:8081/labtest1/ItemService/Items/add").post(body)
+						.build();
+
+				try (Response response = client.newCall(request).execute()) {
+					return response.body().string();
+				}
+			} catch (Exception e) {
+				System.out.println("Error in Inserting Fund Payment " + e);
+				e.printStackTrace();
+				e.getMessage();
+				return "error";
+			}
+			
+		}
+
+*/
 		
 		//update fund details
-		
 		public String updateFund(String id, String code, String type, String amount, String date, String status)
 		{ 
-			 String output = ""; 
-			 try
-			 { 
-			 con = DBconnect.getconnect(); 
-			 if (con == null) 
-			 {return "Error while connecting to the database for updating."; } 
-			 // create a prepared statement
-			 String query = "UPDATE funds SET fundCode=?,fundType=?,amount=?,date=?,status=?  WHERE fundId=?"; 
-			 PreparedStatement preparedStmt = con.prepareStatement(query); 
-			 // binding values
-			 preparedStmt.setString(1, code); 
-			 preparedStmt.setString(2, type); 
-			 preparedStmt.setDouble(3, Double.parseDouble(amount)); 
-			 preparedStmt.setString(4, date);
-			 preparedStmt.setString(5, status);
-			 preparedStmt.setInt(6, Integer.parseInt(id)); 
-			 // execute the statement
-			 preparedStmt.execute(); 
-			 con.close(); 
-			 output = "Updated successfully"; 
-			 } 
-			 catch (Exception e) 
-			 { 
-			 output = "Error while updating the fund details."; 
-			 System.err.println(e.getMessage()); 
-			 } 
-			 return output; 
-			 } 
+			String output = ""; 
+			try
+			{ 	
+				//database connection
+				con = DBconnect.getconnect(); 
+				if (con == null) 
+				{
+					return "Error while connecting to the database for updating."; 
+				} 
+			
+				// call the query
+				String query = "UPDATE funds SET fundCode=?,fundType=?,amount=?,date=?,status=?  WHERE fundId=?"; 
+			
+				// create a prepared statement
+				PreparedStatement preparedStmt = con.prepareStatement(query); 
+			
+				preparedStmt.setString(1, code); 
+				preparedStmt.setString(2, type); 
+				preparedStmt.setDouble(3, Double.parseDouble(amount)); 
+				preparedStmt.setString(4, date);
+				preparedStmt.setString(5, status);
+				preparedStmt.setInt(6, Integer.parseInt(id)); 
+			
+				// execute the statement
+				int updateFund = preparedStmt.executeUpdate(); 
+				
+				//check wheather is it exis record
+				if ( updateFund > 0 ) {
+				
+				//output
+				output = "Fund details Updated successfully"; 
+				} else
+					output = "Invalid Fund Id."; 
+				con.close(); 
+				} 
+				catch (Exception e) 
+				{ 
+					output = "Error while updating the fund details."; 
+					System.err.println(e.getMessage()); 
+				} 
+				return output; 
+			} 
 		
 		
 		
 		
 		
 		public String deleteFund(String fundId) 
-		 { 
-		 String output = ""; 
-		 try
-		 { 
-		 con = DBconnect.getconnect(); 
-		 if (con == null) 
-		 {return "Error while connecting to the database for deleting."; } 
-		 // create a prepared statement
-		 String query = "delete from funds where fundId=?"; 
-		 PreparedStatement preparedStmt = con.prepareStatement(query); 
-		 // binding values
-		 preparedStmt.setInt(1, Integer.parseInt(fundId)); 
-		 // execute the statement
-		 preparedStmt.execute(); 
-		 con.close(); 
-		 output = "Deleted successfully"; 
-		 } 
-		 catch (Exception e) 
-		 { 
-		 output = "Error while deleting the fund details."; 
-		 System.err.println(e.getMessage()); 
-		 } 
-		 return output; 
-		 } 
+		{ 
+			String output = ""; 
+			try
+			{ 
+				//database connection
+				con = DBconnect.getconnect(); 
+				if (con == null) 
+				{
+					return "Error while connecting to the database for deleting."; 
+				} 
+				
+				
+			
+				// call the query
+				String query = "delete from funds where fundId=?"; 
+				
+			
+				//create the prepared statement
+				PreparedStatement preparedStmt = con.prepareStatement(query); 
+			
+				preparedStmt.setInt(1, Integer.parseInt(fundId)); 
+				// execute the statement
+				int deleteFund = preparedStmt.executeUpdate(); 
+				
+				if ( deleteFund > 0 ) {
+
+					output = "Fund details Deleted successfully";
+				}
+				else {
+					output = "Invalid fund Id";
+				}
+				con.close(); 
+				 
+				
+				
+			}
+			catch (Exception e) 
+			{ 
+				output = "Error while deleting the fund details."; 
+				System.err.println(e.getMessage()); 
+			} 
+			return output; 
+		} 
 		
+/*		public String updateFundStatus( String status)
+		{ 
+			String output = ""; 
+			try
+			{ 	
+				//database connection
+				con = DBconnect.getconnect(); 
+				if (con == null) 
+				{
+					return "Error while connecting to the database for updating."; 
+				} 
+			
+				// call the query
+				String query = "UPDATE funds SET status=?  WHERE fundId=?"; 
+			
+				// create a prepared statement
+				PreparedStatement preparedStmt = con.prepareStatement(query); 
+			
+				//preparedStmt.setString(1, code); 
+				//preparedStmt.setString(2, type); 
+				//preparedStmt.setDouble(3, Double.parseDouble(amount)); 
+				//preparedStmt.setString(4, date);
+				preparedStmt.setString(5, status);
+				preparedStmt.setInt(6, Integer.parseInt(id)); 
+			
+				// execute the statement
+				int updateFund = preparedStmt.executeUpdate(); 
+				
+				//check wheather is it exis record
+				if ( updateFund > 0 ) {
+				
+				//output
+				output = "Fund details Updated successfully"; 
+				} else
+					output = "Invalid Fund Id."; 
+				con.close(); 
+				} 
+				catch (Exception e) 
+				{ 
+					output = "Error while updating the fund details."; 
+					System.err.println(e.getMessage()); 
+				} 
+				return output; 
+			} 
+*/				
 		
 
 
