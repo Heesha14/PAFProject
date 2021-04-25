@@ -91,7 +91,7 @@ public class ProjectService {
 //Read the values from the JSON object
         String fund_ID = fundObj.get("fundId").getAsString();
         String fundStatus = fundObj.get("status").getAsString();
-        String output = projectObj.updatePaymentsStatus(fund_ID, fundStatus);
+        String output = projectObj.updateFundsStatus(fund_ID, fundStatus);
         return output;
     }
 
