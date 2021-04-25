@@ -15,7 +15,6 @@ public class DBconnect {
 	 Class.forName("com.mysql.jdbc.Driver"); 
 	 
 	 //DBName, username, password 
-	 
 	 con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/test", "root", "root"); 
 	 } 
 	 catch (Exception e) 

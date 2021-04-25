@@ -275,7 +275,7 @@ public class FundService {
 		
 		
 		
-		
+		//delete fund record
 		public String deleteFund(String fundId) 
 		{ 
 			String output = ""; 
@@ -321,7 +321,9 @@ public class FundService {
 			return output; 
 		} 
 		
-/*		public String updateFundStatus( String status)
+		
+		//update fund-status by project Manager 
+		public String updateFundStatus( int fundId,String status)
 		{ 
 			String output = ""; 
 			try
@@ -333,18 +335,15 @@ public class FundService {
 					return "Error while connecting to the database for updating."; 
 				} 
 			
-				// call the query
+				// call the query to update status of the fund table
 				String query = "UPDATE funds SET status=?  WHERE fundId=?"; 
 			
 				// create a prepared statement
 				PreparedStatement preparedStmt = con.prepareStatement(query); 
 			
-				//preparedStmt.setString(1, code); 
-				//preparedStmt.setString(2, type); 
-				//preparedStmt.setDouble(3, Double.parseDouble(amount)); 
-				//preparedStmt.setString(4, date);
-				preparedStmt.setString(5, status);
-				preparedStmt.setInt(6, Integer.parseInt(id)); 
+				
+				preparedStmt.setString(1, status);
+				preparedStmt.setInt(2, fundId); 
 			
 				// execute the statement
 				int updateFund = preparedStmt.executeUpdate(); 
@@ -353,19 +352,19 @@ public class FundService {
 				if ( updateFund > 0 ) {
 				
 				//output
-				output = "Fund details Updated successfully"; 
+				output = "Fund status record Updated successfully"; 
 				} else
 					output = "Invalid Fund Id."; 
 				con.close(); 
 				} 
 				catch (Exception e) 
 				{ 
-					output = "Error while updating the fund details."; 
+					output = "Error while updating the fund status."; 
 					System.err.println(e.getMessage()); 
 				} 
 				return output; 
 			} 
-*/				
+				
 		
 
 
