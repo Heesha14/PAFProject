@@ -1,6 +1,30 @@
 package model;
 
 import java.sql.Connection;
+
+
+
+import com.google.gson.JsonObject;
+import com.sun.jersey.api.client.Client;
+
+//import javax.ws.rs.client.ClientBuilder;
+//import javax.ws.rs.client.Entity;
+//import javax.ws.rs.client.Invocation;
+//import javax.ws.rs.client.WebTarget;
+//import org.glassfish.jersey.client.authentication.HttpAuthenticationFeature;
+
+//import com.google.gson.JsonObject;
+
+
+
+import okhttp3.Credentials;
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
+
+
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -197,6 +221,48 @@ public class Order {
 	 } 
 	 return output; 
 	 }
+	
+	
+	//add order payment 
+	
+	
+	public String addOrderPayment(String OrderID) {
+		try {
+			MediaType JSONType = MediaType.get("application/json; charset=utf-8");
+			OkHttpClient client = new OkHttpClient();
+			RequestBody body = RequestBody.create("{ 'OrderID':'" + OrderID
+				+ "'}", JSONType);
+			
+			
+			Request request = new Request.Builder()
+					.url("http://localhost:8090/PaymentManagement/PaymentService/Payments/add").post(body)
+					.build();
+
+			try (Response response = client.newCall(request).execute()) {
+				return response.body().string();
+			}
+		} catch (Exception e) {
+			System.out.println("Error in Inserting to Order Payment " + e);
+			e.printStackTrace();
+			e.getMessage();
+			return "error";
+		}
+		
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 }
 	
