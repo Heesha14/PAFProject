@@ -70,6 +70,15 @@ public class ProjectService {
 		String output = projectObj.deleteProject(Project_ID);
 		return output;
 	}
+	
+//	
+//	@DELETE
+//	@Path("/")
+//	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+//	@Produces(MediaType.TEXT_PLAIN)
+//	public String deleteProject(@FormParam("Project_ID") String Project_ID) {
+//		return  projectObj.deleteProject(Project_ID);
+//	}
 
 	
 }
