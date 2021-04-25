@@ -1,3 +1,4 @@
+  
 package com;
 
 import model.Project;
@@ -79,6 +80,20 @@ public class ProjectService {
 //	public String deleteProject(@FormParam("Project_ID") String Project_ID) {
 //		return  projectObj.deleteProject(Project_ID);
 //	}
+	
+	@PUT
+    @Path("updateFundStatus")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.TEXT_PLAIN)
+    public String updateFundStatus(String request) {
+//Convert the input string to a JSON object
+        JsonObject fundObj = new JsonParser().parse(request).getAsJsonObject();
+//Read the values from the JSON object
+        String fund_ID = fundObj.get("fundId").getAsString();
+        String fundStatus = fundObj.get("status").getAsString();
+        String output = projectObj.updatePaymentsStatus(fund_ID, fundStatus);
+        return output;
+    }
 
 	
 }
