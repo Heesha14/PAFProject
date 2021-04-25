@@ -1,6 +1,7 @@
 package model;
 
 import java.sql.*;
+import com.FundModel;
 
 public class Payment {
 	
@@ -243,6 +244,37 @@ public class Payment {
 		}	 
 		return output;
 	}
+	
+//	public String addFundPayment(FundModel fundModel)
+//	 { 
+//	 String output = ""; 
+//	 try
+//	 { 
+//	 Connection con = connect(); 
+//	 if (con == null) 
+//	 {return "Error while connecting to the database for inserting."; } 
+//	 // create a prepared statement
+//	 String query = " insert into fund_payments(`fundPayid`,`fundCode`,`fundType`,`amount`)"
+//	 + " values (?, ?, ?, ?)"; 
+//	 PreparedStatement preparedStmt = con.prepareStatement(query); 
+//	 // binding values
+//	 preparedStmt.setInt(1, 0); 
+//	 preparedStmt.setString(2, fundModel.getFundCode()); 
+//	 preparedStmt.setString(3, fundModel.getFundType()); 
+//	 preparedStmt.setDouble(4, Double.parseDouble(fundModel.getAmount())); 
+//	// execute the statement3
+//	 preparedStmt.execute(); 
+//
+//	 con.close(); 
+//	 output = "Inserted successfully Fund-payment"; 
+//	 } 
+//	 catch (Exception e) 
+//	 { 
+//	 output = "Error while inserting the fund payment."; 
+//	 System.err.println(e.getMessage()); 
+//	 } 
+//	 return output; 
+//	 }
 	
 	//insert expenses payment
 		public String insertExpensesPayment(int expenseID, String amount, String expenseStatus, Date paidDate)

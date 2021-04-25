@@ -1,6 +1,7 @@
 package com;
 
 import model.Payment;
+import com.FundModel;
 
 import java.sql.Date;
 import java.text.DateFormat;
@@ -104,6 +105,23 @@ public class PaymentService {
 			String output = paymentObj.insertFundPayment(fundId, amount, paid_date);
 			return output;
 		}
+	
+//	@POST
+//	@Path("add") 
+//	@Consumes(MediaType.APPLICATION_JSON) 
+//	@Produces(MediaType.TEXT_PLAIN) 
+//	public String insertFundPayment1(String fundData) 
+//	{ 
+//		
+//		FundModel fundModel= new FundModel(fundData);
+//
+//
+//		fundModel.jsonConversion();
+//		
+//		Fund fund = new Fund();
+//		
+//		return fund.addFundPayment(fundModel);
+//	}
 		
 	//expense payment insert
 		@POST
@@ -122,5 +140,6 @@ public class PaymentService {
 			
 			return paymentObj.insertExpensesPayment(expenseId, amount, payment_status, Date.valueOf(paid_date));
 		}
+		
 
 }
