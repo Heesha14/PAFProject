@@ -136,8 +136,8 @@ public class FundService {
 					con.close(); 
 					output = "Fund detials Inserted successfully";
 					System.out.println();	
-					output += sendToItems(code,type, amount);
-		//			output += addFundPayment(code,type,amount);
+		
+					output += addFundPayment(code,type,amount);
 					
 			} 
 			catch (Exception e) 
@@ -148,57 +148,8 @@ public class FundService {
 			return output; 
 		 } 
 		
-/*
-		private String sendToItems(String code,String type,String amount) {
-			try {
-				JsonObject msg = new JsonObject();
-				msg.addProperty("fundCode", code);
-				msg.addProperty("fundType", type);
-				msg.addProperty("amount",amount);
-			
-				Client client = Client..newClient();
-				WebTarget webTarget = client.target("http://localhost:8081/labtest1/ItemService").path("Items/add");
-				Invocation.Builder invocationBuilder = webTarget.request(MediaType.APPLICATION_JSON);
-				Response response = invocationBuilder.put(Entity.entity(msg.toString(), MediaType.APPLICATION_JSON));
 
-			return response.toString();
-				
-			} catch (Exception e) {
-				System.out.println("Error in making payments " + e);
-				return "Not send to payments";
-			}
-
-			//return "Payments status updated";
-		}
-*/
 		
-
-		public String sendToItems(String code,String type,String amount) {
-			try {
-				MediaType JSONType = MediaType.get("application/json; charset=utf-8");
-				OkHttpClient client = new OkHttpClient();
-				RequestBody body = RequestBody.create("{ 'itemCode':'" + code
-						+ "','itemName':'"+ type
-						+ "','itemPrice':'" + amount
-					
-						+ "'}", JSONType);
-				Request request = new Request.Builder()
-						.url("http://localhost:8081/labtest1/ItemService/Items/add").post(body)
-						.build();
-
-				try (Response response = client.newCall(request).execute()) {
-					return response.body().string();
-				}
-			} catch (Exception e) {
-				System.out.println("Error in GetInsertsendToItemSeviveFromPayment " + e);
-				e.printStackTrace();
-				e.getMessage();
-				return "error";
-			}
-			//return " And send to item";
-		}
-		
-/*		
 		public String addFundPayment(String code,String type,String amount) {
 			try {
 				MediaType JSONType = MediaType.get("application/json; charset=utf-8");
@@ -209,7 +160,7 @@ public class FundService {
 					
 						+ "'}", JSONType);
 				Request request = new Request.Builder()
-						.url("http://localhost:8081/labtest1/ItemService/Items/add").post(body)
+						.url("http://localhost:8090/PaymentManagement/PaymentService/Payments/addfund").post(body)
 						.build();
 
 				try (Response response = client.newCall(request).execute()) {
@@ -224,7 +175,7 @@ public class FundService {
 			
 		}
 
-*/
+
 		
 		//update fund details
 		public String updateFund(String id, String code, String type, String amount, String date, String status)
@@ -255,7 +206,7 @@ public class FundService {
 				// execute the statement
 				int updateFund = preparedStmt.executeUpdate(); 
 				
-				//check wheather is it exis record
+				//check whether is it exist record
 				if ( updateFund > 0 ) {
 				
 				//output
