@@ -108,7 +108,7 @@ public class FundManagementRest {
 		@PUT
 		@Path("/updateStatus")
 		@Consumes(MediaType.APPLICATION_JSON)
-		@Produces(MediaType.TEXT_PLAIN)
+		@Produces(MediaType.APPLICATION_JSON0)
 		public String updateFundStatus(String updateStatus)
 		{
 		
