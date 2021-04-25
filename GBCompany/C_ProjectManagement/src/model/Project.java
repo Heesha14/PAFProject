@@ -1,5 +1,14 @@
 package model;
 
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.client.Invocation;
+import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import com.google.gson.JsonObject;
+
 import java.sql.*;
 
 public class Project {
@@ -183,6 +192,32 @@ public class Project {
 		 } 
 		 return output; 
 		 }
-			
+	public String updateFundsStatus(String fundId, String fundStatus) {
+        try {
+            JsonObject msg = new JsonObject();
+            msg.addProperty("fundId", fundId);
+            msg.addProperty("status", fundStatus);
+
+ 
+
+            Client client = ClientBuilder.newBuilder().build();
+            WebTarget webTarget = client.target("http://localhost:8090/FundManagement/fundService").path("Funds/updateStatus");
+            Invocation.Builder invocationBuilder = webTarget.request(MediaType.APPLICATION_JSON);
+            Response response = invocationBuilder.put(Entity.entity(msg.toString(), MediaType.APPLICATION_JSON));
+
+ 
+
+        //return response.toString();
+            
+        } catch (Exception e) {
+            System.out.println("Error in updating fund status " + e);
+            return "Error in updating fund status s";
+        }
+
+ 
+
+        return "Fund status updated";
+    }
+	
 	
 }
